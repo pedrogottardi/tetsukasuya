@@ -1,0 +1,918 @@
+/* Importar a fonte Poppins do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-color: #0066ff;
+  --primary-light: #e6f0ff;
+  --text-color: #333;
+  --text-light: #666;
+  --background: #f9f9f9;
+  --card-bg: #ffffff;
+  --border-radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-color);
+  line-height: 1.5;
+  font-weight: 400;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+h1 {
+  color: var(--text-color);
+  margin-bottom: 8px;
+  font-size: clamp(1.6rem, 4vw, 2rem);
+  font-weight: 700;
+}
+
+.divider {
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-color);
+  margin: 0 auto;
+}
+
+h2 {
+  color: var(--text-color);
+  margin-bottom: 12px;
+  font-size: clamp(1rem, 3vw, 1.1rem);
+  font-weight: 600;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  gap: 24px;
+}
+
+.left-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.method-info {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.method-info p {
+  margin-bottom: 10px;
+  font-weight: 300;
+  font-size: 0.9rem;
+}
+
+.method-info ul {
+  margin-left: 20px;
+  font-size: 0.9rem;
+}
+
+.coffee-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: var(--text-color);
+  font-size: 0.9rem;
+}
+
+/* Estilos para os campos de entrada */
+.input-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  flex: 1;
+  min-width: 80px;
+}
+
+.input-group label {
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  color: var(--text-light);
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: var(--transition);
+  background-color: #fafafa;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 102, 255, 0.1);
+}
+
+/* Estilos para campos desabilitados */
+.input-group.disabled label {
+    color: #999;
+}
+
+.input-group.disabled input {
+    background-color: #f0f0f0;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* Estilos para o toggle de campos avançados */
+.advanced-toggle {
+    margin-top: 12px;
+    font-size: 0.8rem;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.toggle-label input {
+    margin-right: 8px;
+}
+
+.toggle-text {
+    color: var(--text-light);
+    font-size: 0.8rem;
+}
+
+.preference-section {
+  background-color: var(--card-bg);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.preference-section h2 {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.preference-cards {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.preference-card {
+  flex: 1;
+  background-color: #fafafa;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+.preference-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.preference-card.selected {
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
+}
+
+.preference-card.selected::after {
+  display: none;
+}
+
+.preference-card p {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.icon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.preference-card h3 {
+  margin: 6px 0 4px;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+.recipe-container {
+  background-color: var(--card-bg);
+  padding: 24px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.15s ease-out;
+  height: auto;
+  min-height: 200px;
+}
+
+.recipe-container h3 {
+  color: var(--text-color);
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.recipe-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: height 0.3s ease;
+  height: auto;
+}
+
+.recipe-info {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+}
+
+.recipe-info p {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.recipe-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 400;
+  overflow-y: visible;
+  font-size: 0.9rem;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 4px 0;
+  animation: fadeIn 0.1s ease-out;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+.step-number {
+  color: var(--text-color);
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.step-number::after {
+  content: ".";
+}
+
+.step-text {
+  flex: 1;
+  line-height: 1.6;
+}
+
+/* Animações simplificadas - apenas fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.recipe-container {
+  animation: fadeIn 0.15s ease-out;
+}
+
+.step {
+  animation: fadeIn 0.1s ease-out;
+  animation-fill-mode: both;
+}
+
+/* Delays menores entre os passos - adicionando mais passos */
+.step:nth-child(1) { animation-delay: 0.01s; }
+.step:nth-child(2) { animation-delay: 0.02s; }
+.step:nth-child(3) { animation-delay: 0.03s; }
+.step:nth-child(4) { animation-delay: 0.04s; }
+.step:nth-child(5) { animation-delay: 0.05s; }
+.step:nth-child(6) { animation-delay: 0.06s; }
+.step:nth-child(7) { animation-delay: 0.07s; }
+.step:nth-child(8) { animation-delay: 0.08s; }
+.step:nth-child(9) { animation-delay: 0.09s; }
+.step:nth-child(10) { animation-delay: 0.1s; }
+
+/* Media queries para responsividade */
+@media (max-width: 900px) {
+  .main-content {
+    flex-direction: column;
+  }
+  
+  .recipe-container {
+    margin-top: 20px;
+    height: auto;
+  }
+  
+  /* Ajustar tamanho dos cartões para telas menores */
+  .preference-card {
+    padding: 10px;
+  }
+  
+  .preference-card h3 {
+    font-size: 0.85rem;
+  }
+  
+  .icon {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 12px 8px;
+  }
+  
+  header {
+    margin-bottom: 16px;
+  }
+  
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  
+  .divider {
+    width: 40px;
+    height: 2px;
+  }
+  
+  .form-group {
+    padding: 14px;
+  }
+  
+  .input-group input {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+  
+  .preference-section {
+    padding: 12px;
+  }
+  
+  .preference-section h2 {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+  
+  .preference-cards {
+    flex-direction: column;
+    gap: 6px;
+  }
+  
+  .preference-card {
+    margin-bottom: 6px;
+    padding: 8px 6px;
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+  
+  .preference-card .icon {
+    font-size: 1.4rem;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  
+  .preference-card h3 {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  
+  .preference-card p {
+    font-size: 0.7rem;
+    margin-top: 2px;
+  }
+  
+  .timer-section {
+    padding: 10px;
+    margin-top: 8px;
+  }
+  
+  .timer-container {
+    gap: 6px;
+  }
+  
+  .timer-display {
+    font-size: 1.5rem;
+    padding: 4px 8px;
+    min-width: 80px;
+    margin-bottom: 2px;
+  }
+  
+  .timer-controls {
+    gap: 6px;
+  }
+  
+  .timer-btn {
+    padding: 8px 6px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+  
+  .timer-progress {
+    margin: 3px 0;
+    height: 3px;
+  }
+  
+  .timer-step-info {
+    margin-top: 0;
+    padding: 0;
+  }
+  
+  .current-step {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .next-step {
+    font-size: 0.6rem;
+    margin-top: 0;
+    line-height: 1.2;
+  }
+  
+  .recipe-container {
+    padding: 14px;
+    margin-top: 12px;
+  }
+  
+  .recipe-container h3 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .recipe-info {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  
+  .recipe-info p {
+    font-size: 0.75rem;
+    flex: 0 0 48%;
+    margin-bottom: 4px;
+  }
+  
+  .recipe-steps {
+    gap: 6px;
+    font-size: 0.8rem;
+  }
+  
+  .step {
+    padding: 8px;
+  }
+  
+  .step-number {
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+  }
+  
+  .step-text {
+    font-size: 0.75rem;
+  }
+}
+
+/* Ajustes específicos para telas muito pequenas */
+@media (max-width: 360px) {
+  .recipe-info {
+    font-size: 0.7rem !important;
+  }
+  
+  .recipe-info p {
+    font-size: 0.7rem !important;
+  }
+  
+  .recipe-info p strong {
+    font-size: 0.65rem !important;
+  }
+}
+
+/* Estilos para campos com cadeado */
+.input-with-lock {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-with-lock input {
+    width: 100%;
+    padding-right: 36px; /* Espaço para o botão de cadeado */
+}
+
+.lock-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.lock-button:hover {
+    transform: scale(1.1);
+    background: none;
+}
+
+.input-group.disabled .lock-button {
+    opacity: 0.7;
+}
+
+/* Estilos para o cronômetro - versão ultra compacta */
+.timer-section {
+  background-color: var(--card-bg);
+  padding: 12px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  margin-top: 12px;
+}
+
+.timer-section h2 {
+  margin-bottom: 6px;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.timer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.timer-display {
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: monospace;
+  color: var(--text-color);
+  background-color: #f5f5f5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  min-width: 100px;
+  text-align: center;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.1);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 250px;
+  margin-top: 2px;
+}
+
+.timer-btn {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+#timer-start {
+  background-color: var(--primary-color);
+}
+
+#timer-start.pause {
+  background-color: #ff9800;
+}
+
+#timer-reset {
+  background-color: #f44336;
+}
+
+.timer-progress {
+  width: 100%;
+  height: 4px;
+  background-color: #eee;
+  border-radius: 2px;
+  overflow: visible;
+  position: relative;
+  margin: 6px 0;
+}
+
+.timer-progress-bar {
+  height: 100%;
+  width: 0%;
+  background-color: var(--primary-color);
+  transition: width 0.5s ease;
+  will-change: width;
+}
+
+.timer-step-info {
+  text-align: center;
+  width: 100%;
+  margin-top: -2px;
+  line-height: 1.4;
+  padding: 2px 0;
+}
+
+.current-step {
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: rgba(0, 102, 255, 0.08);
+  display: inline-block;
+  margin-bottom: 4px;
+  color: var(--text-color);
+  font-size: 0.8rem;
+}
+
+.next-step {
+  font-size: 0.7rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+
+.timer-timestamps {
+  position: absolute;
+  top: 5px;
+  width: 100%;
+  height: 14px;
+}
+
+.timestamp {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  color: var(--text-light);
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.timestamp::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  height: 5px;
+  width: 1px;
+  background-color: #ccc;
+  transform: translateX(-50%);
+}
+
+.timestamp.left-edge {
+  transform: translateX(0%);
+  text-align: left;
+}
+
+.timestamp.right-edge {
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+/* Otimização para dispositivos com tela pequena em modo paisagem */
+@media (max-height: 500px) and (orientation: landscape) {
+  .container {
+    padding: 10px;
+  }
+  
+  .preference-section {
+    padding: 10px;
+  }
+  
+  .preference-cards {
+    gap: 6px;
+  }
+  
+  .timer-section {
+    padding: 8px;
+  }
+}
+
+/* Ajustes específicos para dispositivos móveis */
+@media only screen and (max-width: 767px) {
+  /* Reset de layout para mobile */
+  .main-content {
+    display: block !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  .left-column, 
+  .right-column {
+    width: 100% !important;
+    flex: none !important;
+  }
+  
+  /* Ocultar textos descritivos em cartões de preferência */
+  .preference-card p {
+    display: none !important;
+  }
+  
+  /* Cartões de preferência em layout horizontal */
+  .preference-card {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    padding: 8px 10px !important;
+    margin-bottom: 6px !important;
+  }
+  
+  .preference-card .icon {
+    margin-right: 10px !important;
+    margin-bottom: 0 !important;
+    font-size: 1.4rem !important;
+  }
+  
+  .preference-card h3 {
+    margin: 0 !important;
+    font-size: 0.85rem !important;
+  }
+  
+  /* Melhorar diagramação do passo a passo */
+  .recipe-container {
+    padding: 12px !important;
+    margin-top: 12px !important;
+  }
+  
+  .recipe-details {
+    height: auto !important;
+    min-height: 200px !important;
+  }
+  
+  /* Reorganizar as informações da receita em uma linha */
+  .recipe-info {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+    margin-bottom: 12px !important;
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid #eee !important;
+  }
+  
+  .recipe-info p {
+    margin-bottom: 0 !important;
+    font-size: 0.75rem !important;
+    flex: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+  
+  .recipe-info p strong {
+    display: block !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .recipe-steps {
+    gap: 10px !important;
+  }
+  
+  /* Remover a bolinha azul dos passos e alterar a cor para preto */
+  .step {
+    padding: 8px 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .step-number {
+    font-size: 0.8rem !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 24px !important;
+    display: inline !important;
+    background-color: transparent !important;
+    color: #000000 !important;
+    border-radius: 0 !important;
+    font-weight: 700 !important;
+  }
+  
+  .step-text {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    flex: 1 !important;
+    color: #333333 !important;
+  }
+  
+  /* Remover o fundo e estilo de badge do current-step */
+  .current-step {
+    background-color: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    display: block !important;
+    font-weight: 500 !important;
+    margin-bottom: 2px !important;
+  }
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Método 4:6 - Tetsu Kasuya</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
+    <meta name="description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
+    <meta property="og:title" content="Método 4:6 - Tetsu Kasuya">
+    <meta property="og:description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
+    <meta property="og:type" content="website">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Método Tetsu Kasuya (4:6)</h1>
+            <div class="divider"></div>
+        </header>
+
+        <div class="main-content">
+            <div class="left-column">
+                <div class="coffee-form">
+                    <div class="form-group">
+                        <div class="input-row">
+                            <div class="input-group">
+                                <label for="coffee-amount">Café (g):</label>
+                                <input type="number" id="coffee-amount" value="15" min="10" max="50">
+                            </div>
+                            <div class="input-group disabled">
+                                <label for="water-amount">Água (ml):</label>
+                                <div class="input-with-lock">
+                                    <input type="number" id="water-amount" value="225" min="150" max="750" disabled>
+                                    <button class="lock-button" id="water-lock" title="Desbloquear campo">🔒</button>
+                                </div>
+                            </div>
+                            <div class="input-group disabled">
+                                <label for="ratio">Proporção:</label>
+                                <div class="input-with-lock">
+                                    <input type="number" id="ratio" value="15" min="10" max="20" step="1" disabled>
+                                    <button class="lock-button" id="ratio-lock" title="Desbloquear campo">🔒</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preference-section">
+                        <h2>Preferência de sabor:</h2>
+                        <div class="preference-cards">
+                            <div class="preference-card" data-flavor="acidic">
+                                <div class="icon">🍋</div>
+                                <h3>Mais Acidez</h3>
+                                <p>Primeiro ataque com mais água</p>
+                            </div>
+
+                            <div class="preference-card" data-flavor="sweet">
+                                <div class="icon">🍯</div>
+                                <h3>Mais Doçura</h3>
+                                <p>Primeiro ataque com menos água</p>
+                            </div>
+
+                            <div class="preference-card" data-flavor="standard">
+                                <div class="icon">⚖️</div>
+                                <h3>Equilibrado</h3>
+                                <p>Ataques iguais para equilíbrio</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="preference-section">
+                        <h2>Preferência de corpo:</h2>
+                        <div class="preference-cards">
+                            <div class="preference-card" data-body="full">
+                                <div class="icon">💪</div>
+                                <h3>Mais Corpo</h3>
+                                <p>4 ataques finais</p>
+                            </div>
+
+                            <div class="preference-card" data-body="light">
+                                <div class="icon">🦴</div>
+                                <h3>Menos Corpo</h3>
+                                <p>2 ataques finais</p>
+                            </div>
+
+                            <div class="preference-card" data-body="standard">
+                                <div class="icon">🔄</div>
+                                <h3>Padrão</h3>
+                                <p>3 ataques finais</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Novo cronômetro interativo -->
+                    <div class="timer-section">
+                        <h2>Cronômetro</h2>
+                        <div class="timer-container">
+                            <div class="timer-display">00:00</div>
+                            <div class="timer-controls">
+                                <button id="timer-start" class="timer-btn">Iniciar</button>
+                                <button id="timer-reset" class="timer-btn">Reiniciar</button>
+                            </div>
+                            <div class="timer-progress">
+                                <div class="timer-progress-bar"></div>
+                                <div class="timer-timestamps" id="timer-timestamps">
+                                    <!-- Os timestamps serão gerados dinamicamente via JavaScript -->
+                                </div>
+                            </div>
+                            <div class="timer-step-info">
+                                <div class="current-step">Pronto para começar</div>
+                                <div class="next-step">Primeiro passo: Pesar o café</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="recipe-container" id="recipe-container">
+                    <h3>Passo a passo:</h3>
+                    <div class="recipe-details">
+                        <div class="recipe-info">
+                            <p><strong>Café:</strong> <span id="recipe-coffee">15g</span></p>
+                            <p><strong>Água:</strong> <span id="recipe-water">225ml</span></p>
+                            <p><strong>Proporção:</strong> <span id="recipe-ratio">1:15</span></p>
+                        </div>
+                        
+                        <div class="recipe-steps" id="recipe-steps">
+                            <!-- Os passos da receita serão inseridos aqui via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+      // Adicionar script para ajustar a visualização em dispositivos móveis
+      document.addEventListener('DOMContentLoaded', function() {
+        // Verificar se é um dispositivo móvel
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+          // Ajustar os cartões de preferência para dispositivos móveis
+          const preferenceCards = document.querySelectorAll('.preference-card');
+          
+          preferenceCards.forEach(card => {
+            // Armazenar o texto original como atributo de dados
+            const descText = card.querySelector('p').textContent;
+            card.setAttribute('data-description', descText);
+            
+            // Adicionar tooltip para mostrar a descrição ao tocar
+            card.addEventListener('click', function() {
+              // Mostrar tooltip com a descrição
+              const tooltip = document.createElement('div');
+              tooltip.className = 'mobile-tooltip';
+              tooltip.textContent = this.getAttribute('data-description');
+              
+              // Posicionar o tooltip
+              document.body.appendChild(tooltip);
+              
+              // Remover o tooltip após 2 segundos
+              setTimeout(() => {
+                if (tooltip.parentNode) {
+                  tooltip.parentNode.removeChild(tooltip);
+                }
+              }, 2000);
+            });
+          });
+        }
+      });
+    </script>
+    <style>
+      /* Estilo para o tooltip móvel */
+      .mobile-tooltip {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        z-index: 1000;
+        max-width: 80%;
+        text-align: center;
+        animation: fadeIn 0.3s, fadeOut 0.3s 1.7s;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+    </style>
+</body>
+</html> 
