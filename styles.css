@@ -223,6 +223,10 @@ label {
   position: relative;
   overflow: hidden;
   will-change: transform, opacity;
+  height: 132px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .preference-card:hover {
@@ -794,7 +798,7 @@ button:hover {
   }
 }
 
-/* Ajustes específicos para dispositivos móveis */
+/* Ajustes para dispositivos móveis - centralização e tamanho de fonte */
 @media only screen and (max-width: 767px) {
   /* Reset de layout para mobile */
   .main-content {
@@ -816,12 +820,9 @@ button:hover {
   
   /* Cartões de preferência em layout horizontal */
   .preference-card {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    text-align: left !important;
-    padding: 8px 10px !important;
-    margin-bottom: 6px !important;
+    height: auto !important;
+    min-height: 60px !important;
+    flex-direction: row !important;
   }
   
   .preference-card .icon {
@@ -906,13 +907,115 @@ button:hover {
     color: #333333 !important;
   }
   
-  /* Remover o fundo e estilo de badge do current-step */
+  /* Estilo do passo atual com texto centralizado e fonte maior */
   .current-step {
-    background-color: transparent !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
+    background-color: #f5f5f5 !important;
+    padding: 8px 10px !important;
+    border-radius: 4px !important;
     display: block !important;
-    font-weight: 500 !important;
-    margin-bottom: 2px !important;
+    font-weight: 600 !important;
+    margin-bottom: 6px !important;
+    color: #000000 !important;
+    font-size: 1rem !important;
+    border-left: 3px solid var(--primary-color) !important;
+    text-align: center !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Estilo do próximo passo com fonte menor */
+  .next-step {
+    font-size: 0.7rem !important; /* Fonte reduzida */
+    color: #666666 !important;
+    margin-top: 4px !important;
+    padding: 4px !important;
+    font-style: italic !important;
+    border-top: 1px dashed #e0e0e0 !important;
+    padding-top: 6px !important;
+    text-align: center !important; /* Centralizado para consistência */
+  }
+  
+  /* Container dos passos com margin-top reduzido */
+  .timer-step-info {
+    background-color: white !important;
+    border-radius: 6px !important;
+    padding: 8px !important;
+    margin-top: 0 !important; /* Reduzido para 0 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+  }
+  
+  /* Ajuste do timer-progress */
+  .timer-progress {
+    margin-bottom: 0 !important; /* Remover margem inferior */
+  }
+}
+
+/* Ajuste para o ícone do limão */
+.preference-card[data-flavor="acidic"] .icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 1.8rem !important;
+}
+
+.preference-card[data-flavor="acidic"] .icon img {
+  height: 100% !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+/* Ajuste para todos os ícones */
+.preference-card .icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 1.8rem !important;
+}
+
+.preference-card .icon img {
+    height: 100% !important;
+    width: auto !important;
+    object-fit: contain !important;
+}
+
+/* Ajustes específicos para cada ícone se necessário */
+.preference-card[data-flavor="acidic"] .icon img,
+.preference-card[data-flavor="sweet"] .icon img,
+.preference-card[data-flavor="standard"] .icon img,
+.preference-card[data-body="full"] .icon img,
+.preference-card[data-body="light"] .icon img,
+.preference-card[data-body="standard"] .icon img {
+    height: 100% !important;
+    width: auto !important;
+}
+
+/* Estilo para cartões desabilitados */
+.preference-card.disabled {
+  cursor: not-allowed !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Destaque para a seção de receita */
+.recipe-container.highlighted {
+  box-shadow: 0 0 0 2px var(--primary-color), 0 4px 16px rgba(0, 102, 255, 0.15) !important;
+  animation: pulse 2s infinite !important;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 2px var(--primary-color), 0 4px 16px rgba(0, 102, 255, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 3px var(--primary-color), 0 4px 20px rgba(0, 102, 255, 0.25);
+  }
+  100% {
+    box-shadow: 0 0 0 2px var(--primary-color), 0 4px 16px rgba(0, 102, 255, 0.15);
+  }
+}
+
+/* Ajustes para dispositivos móveis */
+@media only screen and (max-width: 767px) {
+  .recipe-container.highlighted {
+    margin-top: 16px !important;
+    border: 2px solid var(--primary-color) !important;
   }
 }

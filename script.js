@@ -145,23 +145,17 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         }
         
-        // Alternativa usando áudio pré-carregado para dispositivos móveis
-        function createAudioElement(frequency) {
-            // Criar elemento de áudio com um tom curto
+        // Alternativa usando arquivos de áudio para dispositivos móveis
+        function createAudioElement(isCountdown) {
+            // Criar elemento de áudio com o arquivo apropriado
             const audio = document.createElement('audio');
             
-            // Usar um arquivo de áudio muito pequeno ou um data URI
-            if (frequency > 1000) {
-                // Som de início (mais agudo)
-                audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...'; // Base64 truncado
-            } else {
-                // Som de contagem (mais grave)
-                audio.src = 'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YU...'; // Base64 truncado
-            }
+            // Usar o arquivo beep.mp3 da pasta sfx
+            audio.src = isCountdown ? 'sfx/beep.mp3' : 'sfx/beep.mp3';
             
             // Configurar para reprodução em dispositivos móveis
             audio.preload = 'auto';
-            audio.volume = 0.5;
+            audio.volume = isCountdown ? 0.3 : 0.5; // Volume mais baixo para contagem regressiva
             
             return {
                 play: function() {
@@ -172,7 +166,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Reproduzir e remover após a reprodução
                         clone.play().catch(e => console.error("Erro ao reproduzir áudio:", e));
                         clone.onended = function() {
-                            document.body.removeChild(clone);
+                            if (document.body.contains(clone)) {
+                                document.body.removeChild(clone);
+                            }
                         };
                         
                         // Adicionar temporariamente ao DOM (necessário em alguns dispositivos móveis)
@@ -190,10 +186,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Usar a abordagem apropriada com base no dispositivo
         if (isMobile) {
-            console.log("Usando método de áudio para dispositivos móveis");
+            console.log("Usando método de áudio para dispositivos móveis com arquivo beep.mp3");
             return {
-                countdownBeep: createAudioElement(800),
-                startBeep: createAudioElement(1200)
+                countdownBeep: createAudioElement(true),
+                startBeep: createAudioElement(false)
             };
         } else {
             console.log("Usando método de áudio padrão");
@@ -509,91 +505,125 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Função para configurar os controles do cronômetro com sons
     function setupTimerControls() {
-        // Referências aos elementos do cronômetro
         const startBtn = elements.startBtn;
         const resetBtn = elements.resetBtn;
         
-        // Função para iniciar/pausar o cronômetro
-        startBtn.addEventListener('click', function() {
-            if (timerState.countdownActive) return; // Ignorar cliques durante a contagem regressiva
+        // Função para iniciar a contagem regressiva
+        function startCountdown() {
+            timerState.countdownActive = true;
+            timerState.countdownValue = CONSTANTS.COUNTDOWN_TIME;
             
-            if (!timerState.isRunning) {
-                // Verificar se é um início ou uma continuação
-                if (timerState.elapsedPausedTime > 0) {
-                    // Continuar cronômetro após pausa
-                    startBtn.textContent = 'Pausar';
-                    startBtn.classList.add('pause');
+            // Atualizar o display para mostrar a contagem regressiva
+            elements.timerDisplay.textContent = timerState.countdownValue.toString();
+            
+            // Reproduzir som de contagem regressiva
+            audioElements.countdownBeep.play();
+            
+            // Iniciar o intervalo de contagem regressiva
+            const countdownInterval = setInterval(() => {
+                timerState.countdownValue--;
+                
+                if (timerState.countdownValue > 0) {
+                    // Atualizar o display
+                    elements.timerDisplay.textContent = timerState.countdownValue.toString();
                     
-                    // Ajustar o tempo de início para considerar o tempo já decorrido
-                    timerState.startTime = Date.now() - timerState.elapsedPausedTime;
-                    
-                    // Iniciar o intervalo de atualização
-                    timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
-                    timerState.isRunning = true;
+                    // Reproduzir som de contagem regressiva
+                    audioElements.countdownBeep.play();
                 } else {
-                    // Iniciar contagem regressiva (novo início)
-                    startBtn.disabled = true;
+                    // Contagem regressiva concluída
+                    clearInterval(countdownInterval);
+                    timerState.countdownActive = false;
+                    
+                    // Iniciar o cronômetro
+                    startTimer();
+                    
+                    // Reproduzir som de início (apenas em desktop, em mobile já tocou o beep.mp3)
+                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                    if (!isMobile) {
+                        audioElements.startBeep.play();
+                    }
+                }
+            }, 1000);
+        }
+        
+        // Função para iniciar o cronômetro
+        function startTimer() {
+            // Configurar o tempo de início
+            timerState.startTime = Date.now();
+            timerState.isRunning = true;
+            
+            // Atualizar o botão
+            startBtn.textContent = 'Pausar';
+            startBtn.classList.add('pause');
+            
+            // Desabilitar os cartões de preferência
+            disablePreferenceCards();
+            
+            // Destacar a seção de passo a passo
+            highlightRecipeSection();
+            
+            // Atualizar o array de passos da receita
+            updateRecipeStepsArray();
+            
+            // Iniciar o intervalo de atualização do cronômetro
+            timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
+        }
+        
+        // Adicionar listener para o botão de iniciar/pausar
+        startBtn.addEventListener('click', function() {
+            // Verificar se o cronômetro está em contagem regressiva
+            if (timerState.countdownActive) {
+                return; // Não fazer nada se a contagem regressiva estiver ativa
+            }
+            
+            // Verificar se o cronômetro está em execução
+            if (!timerState.isRunning) {
+                // Verificar se é um dispositivo móvel
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                
+                // Em dispositivos móveis, tocar o beep.mp3 apenas uma vez no início da contagem regressiva
+                if (isMobile) {
+                    // Tocar o som apenas uma vez no início
+                    audioElements.startBeep.play();
+                    
+                    // Iniciar contagem regressiva sem sons adicionais
                     timerState.countdownActive = true;
                     timerState.countdownValue = CONSTANTS.COUNTDOWN_TIME;
                     
-                    // Mostrar contagem regressiva
+                    // Atualizar o display para mostrar a contagem regressiva
                     elements.timerDisplay.textContent = timerState.countdownValue.toString();
-                    elements.currentStep.textContent = "Preparando...";
-                    elements.nextStep.textContent = "Contagem regressiva";
                     
-                    // Tocar som de contagem regressiva
-                    try {
-                        audioElements.countdownBeep.play();
-                    } catch (e) {
-                        console.log('Erro ao reproduzir som:', e);
-                    }
-                    
-                    // Iniciar intervalo de contagem regressiva
+                    // Iniciar o intervalo de contagem regressiva sem sons adicionais
                     const countdownInterval = setInterval(() => {
                         timerState.countdownValue--;
-                        elements.timerDisplay.textContent = timerState.countdownValue.toString();
                         
-                        // Tocar som a cada segundo da contagem regressiva
                         if (timerState.countdownValue > 0) {
-                            try {
-                                audioElements.countdownBeep.play();
-                            } catch (e) {
-                                console.log('Erro ao reproduzir som:', e);
-                            }
-                        }
-                        
-                        if (timerState.countdownValue <= 0) {
+                            // Atualizar o display
+                            elements.timerDisplay.textContent = timerState.countdownValue.toString();
+                            // Não tocar sons adicionais durante a contagem
+                        } else {
+                            // Contagem regressiva concluída
                             clearInterval(countdownInterval);
                             timerState.countdownActive = false;
                             
-                            // Tocar som de início
-                            try {
-                                audioElements.startBeep.play();
-                            } catch (e) {
-                                console.log('Erro ao reproduzir som:', e);
-                            }
-                            
-                            // Iniciar cronômetro real
-                            startBtn.textContent = 'Pausar';
-                            startBtn.classList.add('pause');
-                            startBtn.disabled = false;
-                            
-                            timerState.startTime = Date.now();
-                            timerState.elapsedPausedTime = 0;
-                            updateRecipeStepsArray();
-                            
-                            timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
-                            timerState.isRunning = true;
+                            // Iniciar o cronômetro
+                            startTimer();
+                            // Não tocar som adicional ao iniciar
                         }
                     }, 1000);
+                } else {
+                    // Em desktop, manter o comportamento original
+                    startCountdown();
                 }
             } else {
-                // Pausar cronômetro
-                startBtn.textContent = 'Continuar';
-                startBtn.classList.remove('pause');
+                // Pausar o cronômetro
                 clearInterval(timerState.interval);
                 timerState.elapsedPausedTime = Date.now() - timerState.startTime;
                 timerState.isRunning = false;
+                
+                // Atualizar o botão
+                startBtn.textContent = 'Continuar';
+                startBtn.classList.remove('pause');
             }
         });
 
@@ -611,7 +641,68 @@ document.addEventListener('DOMContentLoaded', function() {
             timerState.countdownActive = false;
             timerState.startTime = null;
             timerState.elapsedPausedTime = 0;
+            
+            // Reabilitar os cartões de preferência
+            enablePreferenceCards();
+            
+            // Remover destaque da seção de passo a passo
+            const recipeContainer = document.getElementById('recipe-container');
+            recipeContainer.classList.remove('highlighted');
         });
+    }
+
+    // Função para desabilitar os cartões de preferência
+    function disablePreferenceCards() {
+        const preferenceCards = document.querySelectorAll('.preference-card');
+        preferenceCards.forEach(card => {
+            card.classList.add('disabled');
+            card.style.pointerEvents = 'none';
+            card.style.opacity = '0.6';
+        });
+        
+        // Também desabilitar os inputs de café, água e proporção
+        document.getElementById('coffee-amount').disabled = true;
+        document.getElementById('water-amount').disabled = true;
+        document.getElementById('ratio').disabled = true;
+        
+        // Desabilitar os botões de bloqueio
+        const lockButtons = document.querySelectorAll('.lock-button');
+        lockButtons.forEach(button => {
+            button.disabled = true;
+            button.style.opacity = '0.6';
+        });
+    }
+
+    // Função para reabilitar os cartões de preferência
+    function enablePreferenceCards() {
+        const preferenceCards = document.querySelectorAll('.preference-card');
+        preferenceCards.forEach(card => {
+            card.classList.remove('disabled');
+            card.style.pointerEvents = 'auto';
+            card.style.opacity = '1';
+        });
+        
+        // Reabilitar os inputs
+        document.getElementById('coffee-amount').disabled = false;
+        
+        // Reabilitar os botões de bloqueio
+        const lockButtons = document.querySelectorAll('.lock-button');
+        lockButtons.forEach(button => {
+            button.disabled = false;
+            button.style.opacity = '1';
+        });
+    }
+
+    // Função para destacar a seção de passo a passo
+    function highlightRecipeSection() {
+        const recipeContainer = document.getElementById('recipe-container');
+        recipeContainer.classList.add('highlighted');
+        
+        // Rolar para a seção de passo a passo em dispositivos móveis
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            recipeContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 
     // Função para atualizar o cronômetro
@@ -653,11 +744,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Adicionar os passos de despejo
+        // Calcular o total acumulado para cada despejo
+        let totalWater = 0;
+        
+        // Adicionar os passos de despejo com totais acumulados
         for (let i = 0; i < Math.min(allPours.length, times.length); i++) {
+            totalWater += allPours[i];
             timerState.recipeSteps.push({ 
                 time: times[i], 
-                text: `Despeje ${allPours[i]}ml de água` 
+                text: `Despeje ${allPours[i]}ml de água (Total: ${totalWater}ml)` 
             });
         }
         
@@ -708,7 +803,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Adicionar passo final
-        timerState.recipeSteps.push({ time: finalTime, text: 'Café pronto! ☕' });
+        timerState.recipeSteps.push({ time: finalTime, text: `Café pronto! ☕ (Total: ${totalWater}ml)` });
         
         // Atualizar os timestamps na barra de progresso
         updateTimestamps(finalTime);
