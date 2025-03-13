@@ -1019,3 +1019,58 @@ button:hover {
     border: 2px solid var(--primary-color) !important;
   }
 }
+
+/* Estilos para os contêineres de anúncios */
+.ad-container {
+    width: 100%;
+    max-width: 970px;
+    margin: 20px auto;
+    text-align: center;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.footer-ad-container {
+    width: 100%;
+    max-width: 970px;
+    margin: 20px auto;
+    text-align: center;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilos para o rodapé */
+footer {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-content p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+/* Responsividade para anúncios em dispositivos móveis */
+@media (max-width: 768px) {
+    .ad-container,
+    .footer-ad-container {
+        padding: 5px;
+        margin: 10px auto;
+    }
+}
+
