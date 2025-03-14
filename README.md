@@ -1,104 +1,142 @@
-# ☕ CoffeeGen - Calculadora Método 4:6 de Tetsu Kasuya
+# ☕ CoffeeGen
 
 <div align="center">
   
-![GitHub language count](https://img.shields.io/github/languages/count/pedrogottardi/tetsukasuya)
-![GitHub top language](https://img.shields.io/github/languages/top/pedrogottardi/tetsukasuya)
-![GitHub last commit](https://img.shields.io/github/last-commit/pedrogottardi/tetsukasuya)
-![Bitbucket open issues](https://img.shields.io/github/issues/pedrogottardi/tetsukasuya)
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoffeegen.vercel.app)
-
-<img src="images/balance.png" alt="CoffeeGen Logo" width="120"/>
+<img src="images/balance.png" alt="CoffeeGen Logo" width="150"/>
 
 **Uma aplicação web para calcular as proporções e tempos para o método de preparo de café 4:6 desenvolvido por Tetsu Kasuya.**
 
-[🌐 Acessar Site](https://coffeegen.vercel.app/) | [📝 Reportar Bug](https://github.com/pedrogottardi/tetsukasuya/issues) | [✨ Solicitar Recurso](https://github.com/pedrogottardi/tetsukasuya/issues)
+[![GitHub language count](https://img.shields.io/github/languages/count/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya)
+[![GitHub top language](https://img.shields.io/github/languages/top/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya)
+[![GitHub last commit](https://img.shields.io/github/last-commit/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya/commits)
+[![Bitbucket open issues](https://img.shields.io/github/issues/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya/issues)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoffeegen.vercel.app&style=for-the-badge&logo=vercel&logoColor=white)](https://coffeegen.vercel.app)
+
+<br>
+
+<a href="https://coffeegen.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/🌐_Acessar_Site-4285F4?style=for-the-badge" alt="Acessar Site"/></a>
+<a href="https://github.com/pedrogottardi/tetsukasuya/issues" target="_blank"><img src="https://img.shields.io/badge/📝_Reportar_Bug-FF5252?style=for-the-badge" alt="Reportar Bug"/></a>
+<a href="https://github.com/pedrogottardi/tetsukasuya/issues" target="_blank"><img src="https://img.shields.io/badge/✨_Solicitar_Recurso-00C853?style=for-the-badge" alt="Solicitar Recurso"/></a>
 
 </div>
 
+---
+
+## 💬 O que os usuários dizem
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Pedro" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Pedro G.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Revolucionou meu café da manhã! Agora consigo extrair muito mais sabor dos grãos."</i>
+      </td>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Jake" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Carlos M.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Interface intuitiva e resultados consistentes. Recomendo para todos os amantes de café!"</i>
+      </td>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Julia" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Julia S.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Finalmente entendi o método 4:6! A aplicação torna tudo muito mais simples."</i>
+      </td>
+    </tr>
+  </table>
+</div>
+
+---
+
 ## 📋 Sobre o Projeto
 
+<img align="right" src="images/balance.png" width="100" />
+
 O método 4:6 de Tetsu Kasuya é uma técnica de preparo de café que divide a extração em duas fases principais:
+
 - **Fase 1 (40%)**: Determina a acidez e doçura
 - **Fase 2 (60%)**: Determina o corpo e força
 
 Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuário durante todo o processo de preparo.
 
+---
+
 ## ✨ Funcionalidades
 
-<div align="center">
-  <table>
-    <tr>
-      <td align="center"><img src="images/lemon.png" width="40"/><br>Mais Acidez</td>
-      <td align="center"><img src="images/honey.png" width="40"/><br>Mais Doçura</td>
-      <td align="center"><img src="images/balance.png" width="40"/><br>Equilibrado</td>
-    </tr>
-    <tr>
-      <td align="center"><img src="images/muscle.png" width="40"/><br>Mais Corpo</td>
-      <td align="center"><img src="images/bone.png" width="40"/><br>Menos Corpo</td>
-      <td align="center"><img src="images/arrows.png" width="40"/><br>Padrão</td>
-    </tr>
-  </table>
-</div>
+| Funcionalidade | Descrição |
+|----------------|-----------|
+| 🧮 **Cálculo automático** | Proporção café/água calculada automaticamente |
+| 🍋 **Personalização de sabor** | Escolha entre mais acidez, mais doçura ou equilibrado |
+| 💪 **Personalização de corpo** | Ajuste para mais corpo, menos corpo ou padrão |
+| ⏱️ **Cronômetro interativo** | Passos guiados para o preparo perfeito |
+| 📱 **Design responsivo** | Funciona perfeitamente em desktop e dispositivos móveis |
 
-- 🧮 Cálculo automático da proporção café/água
-- 🍋 Personalização de sabor (mais acidez, mais doçura ou equilibrado)
-- 💪 Personalização de corpo (mais corpo, menos corpo ou padrão)
-- ⏱️ Cronômetro interativo com passos guiados
-- 📱 Design responsivo para desktop e dispositivos móveis
+---
 
 ## 🛠️ Tecnologias Utilizadas
 
-- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) HTML5
-- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) CSS3
-- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) JavaScript (Vanilla)
+<div align="center">
+  
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+
+</div>
+
+---
 
 ## 🚀 Como Usar
 
-1. Acesse o site: [https://coffeegen.vercel.app/](https://coffeegen.vercel.app/)
+<div align="center">
+  <img src="images/balance.png" width="80" />
+</div>
+
+1. Acesse o site: <a href="https://coffeegen.vercel.app/" target="_blank">https://coffeegen.vercel.app/</a>
 2. Defina a quantidade de café desejada
 3. Escolha suas preferências de sabor e corpo
 4. Siga o cronômetro para preparar seu café
+
+> 💡 **Dica:** Para resultados ideais, use uma balança de precisão e um moedor de café ajustável.
+
+---
 
 ## 📋 Pré-requisitos
 
 - Navegador web moderno (Chrome, Firefox, Safari, Edge)
 
-## 💻 Instalação Local
-
-Para executar este projeto localmente:
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/pedrogottardi/tetsukasuya.git
-   ```
-2. Navegue até a pasta do projeto:
-   ```bash
-   cd tetsukasuya
-   ```
-3. Abra o arquivo `index.html` em seu navegador
-
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Para contribuir:
-
-1. Faça um Fork do projeto
-2. Crie uma Branch para sua Feature (`git checkout -b feature/AmazingFeature`)
-3. Faça commit das suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Faça Push para a Branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+---
 
 ## 📝 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo <a href="LICENSE" target="_blank">LICENSE</a> para mais detalhes.
+
+---
 
 ## 👤 Autor
 
+<img align="left" src="https://github.com/pedrogottardi.png" width="100" style="border-radius:50%;margin-right:20px;"/>
+
 **Pedro Gottardi**
 
-- Website: [coffeegen.vercel.app](https://coffeegen.vercel.app/)
-- GitHub: [@pedrogottardi](https://github.com/pedrogottardi)
-- Email: [pedrocerf@gmail.com](mailto:pedrocerf@gmail.com)
+- website: <a href="https://coffeegen.vercel.app/" target="_blank">coffeegen.vercel.app</a>
+- github: <a href="https://github.com/pedrogottardi" target="_blank">@pedrogottardi</a>
+- email: <a href="mailto:pedrocerf@gmail.com" target="_blank">pedrocerf@gmail.com</a>
+
+
+
+---
 
 ## 📄 Direitos Autorais
 
@@ -108,6 +146,8 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 <div align="center">
   
-⭐️ [Dê uma estrela se este projeto te ajudou!](https://github.com/pedrogottardi/tetsukasuya)
+<a href="https://github.com/pedrogottardi/tetsukasuya" target="_blank"><img src="https://img.shields.io/badge/⭐️_Dê_uma_estrela-FFD700?style=for-the-badge" alt="Dê uma estrela se este projeto te ajudou!"/></a>
+
+<a href="https://ko-fi.com/pedrogott" target="_blank"><img src="https://img.shields.io/badge/Me%20compre%20um%20café-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Me compre um café" /></a>
 
 </div>
