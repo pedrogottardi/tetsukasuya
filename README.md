@@ -22,44 +22,6 @@
 
 ---
 
-## 💬 O que os usuários dizem
-
-<div align="center">
-  <table>
-    <tr>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Pedro" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Pedro G.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Revolucionou meu café da manhã! Agora consigo extrair muito mais sabor dos grãos."</i>
-      </td>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Jake" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Carlos M.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Interface intuitiva e resultados consistentes. Recomendo para todos os amantes de café!"</i>
-      </td>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Julia" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Julia S.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Finalmente entendi o método 4:6! A aplicação torna tudo muito mais simples."</i>
-      </td>
-    </tr>
-  </table>
-</div>
-
----
-
 ## 📋 Sobre o Projeto
 
 <img align="right" src="images/balance.png" width="100" />
@@ -99,16 +61,50 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 
 ## 🚀 Como Usar
 
-<div align="center">
-  <img src="images/balance.png" width="80" />
-</div>
-
 1. Acesse o site: <a href="https://coffeegen.vercel.app/" target="_blank">https://coffeegen.vercel.app/</a>
 2. Defina a quantidade de café desejada
 3. Escolha suas preferências de sabor e corpo
 4. Siga o cronômetro para preparar seu café
 
 > 💡 **Dica:** Para resultados ideais, use uma balança de precisão e um moedor de café ajustável.
+
+---
+
+## 💬 O que os usuários dizem
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Pedro" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Pedro G.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Revolucionou meu café da manhã! Agora consigo extrair muito mais sabor dos grãos."</i>
+      </td>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Jake" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Carlos M.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Interface intuitiva e resultados consistentes. Recomendo para todos os amantes de café!"</i>
+      </td>
+      <td width="33%" align="center">
+        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Julia" width="80" style="border-radius:50%"/>
+        <br>
+        <b>Julia S.</b>
+        <br>
+        ⭐⭐⭐⭐⭐
+        <br>
+        <i>"Finalmente entendi o método 4:6! A aplicação torna tudo muito mais simples."</i>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
