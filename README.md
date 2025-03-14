@@ -24,8 +24,6 @@
 
 ## 📋 Sobre o Projeto
 
-<img align="right" src="images/balance.png" width="100" />
-
 O método 4:6 de Tetsu Kasuya é uma técnica de preparo de café que divide a extração em duas fases principais:
 
 - **Fase 1 (40%)**: Determina a acidez e doçura
