@@ -2,17 +2,15 @@
 
 <div align="center">
   
-<img src="images/balance.png" alt="CoffeeGen Logo" width="150"/>
+![GitHub language count](https://img.shields.io/github/languages/count/pedrogottardi/tetsukasuya)
+![GitHub top language](https://img.shields.io/github/languages/top/pedrogottardi/tetsukasuya)
+![GitHub last commit](https://img.shields.io/github/last-commit/pedrogottardi/tetsukasuya)
+![Bitbucket open issues](https://img.shields.io/github/issues/pedrogottardi/tetsukasuya)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoffeegen.vercel.app)
+
+<img src="images/balance.png" alt="CoffeeGen Logo" width="120"/>
 
 **Uma aplicação web para calcular as proporções e tempos para o método de preparo de café 4:6 desenvolvido por Tetsu Kasuya.**
-
-[![GitHub language count](https://img.shields.io/github/languages/count/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya)
-[![GitHub top language](https://img.shields.io/github/languages/top/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya)
-[![GitHub last commit](https://img.shields.io/github/last-commit/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya/commits)
-[![Bitbucket open issues](https://img.shields.io/github/issues/pedrogottardi/tetsukasuya?style=for-the-badge)](https://github.com/pedrogottardi/tetsukasuya/issues)
-[![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoffeegen.vercel.app&style=for-the-badge&logo=vercel&logoColor=white)](https://coffeegen.vercel.app)
-
-<br>
 
 <a href="https://coffeegen.vercel.app/" target="_blank"><img src="https://img.shields.io/badge/🌐_Acessar_Site-4285F4?style=for-the-badge" alt="Acessar Site"/></a>
 <a href="https://github.com/pedrogottardi/tetsukasuya/issues" target="_blank"><img src="https://img.shields.io/badge/📝_Reportar_Bug-FF5252?style=for-the-badge" alt="Reportar Bug"/></a>
@@ -20,18 +18,13 @@
 
 </div>
 
----
-
 ## 📋 Sobre o Projeto
 
 O método 4:6 de Tetsu Kasuya é uma técnica de preparo de café que divide a extração em duas fases principais:
-
 - **Fase 1 (40%)**: Determina a acidez e doçura
 - **Fase 2 (60%)**: Determina o corpo e força
 
 Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuário durante todo o processo de preparo.
-
----
 
 ## ✨ Funcionalidades
 
@@ -43,8 +36,6 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 | ⏱️ **Cronômetro interativo** | Passos guiados para o preparo perfeito |
 | 📱 **Design responsivo** | Funciona perfeitamente em desktop e dispositivos móveis |
 
----
-
 ## 🛠️ Tecnologias Utilizadas
 
 <div align="center">
@@ -55,8 +46,6 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 
 </div>
 
----
-
 ## 🚀 Como Usar
 
 1. Acesse o site: <a href="https://coffeegen.vercel.app/" target="_blank">https://coffeegen.vercel.app/</a>
@@ -66,71 +55,23 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 
 > 💡 **Dica:** Para resultados ideais, use uma balança de precisão e um moedor de café ajustável.
 
----
-
-## 💬 O que os usuários dizem
-
-<div align="center">
-  <table>
-    <tr>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Pedro" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Pedro G.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Revolucionou meu café da manhã! Agora consigo extrair muito mais sabor dos grãos."</i>
-      </td>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Jake" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Carlos M.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Interface intuitiva e resultados consistentes. Recomendo para todos os amantes de café!"</i>
-      </td>
-      <td width="33%" align="center">
-        <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Julia" width="80" style="border-radius:50%"/>
-        <br>
-        <b>Julia S.</b>
-        <br>
-        ⭐⭐⭐⭐⭐
-        <br>
-        <i>"Finalmente entendi o método 4:6! A aplicação torna tudo muito mais simples."</i>
-      </td>
-    </tr>
-  </table>
-</div>
-
----
-
 ## 📋 Pré-requisitos
 
 - Navegador web moderno (Chrome, Firefox, Safari, Edge)
-
----
 
 ## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo <a href="LICENSE" target="_blank">LICENSE</a> para mais detalhes.
 
----
-
 ## 👤 Autor
 
-<img align="left" src="https://github.com/pedrogottardi.png" width="100" style="border-radius:50%;margin-right:20px;"/>
+
 
 **Pedro Gottardi**
 
 - website: <a href="https://coffeegen.vercel.app/" target="_blank">coffeegen.vercel.app</a>
 - github: <a href="https://github.com/pedrogottardi" target="_blank">@pedrogottardi</a>
 - email: <a href="mailto:pedrocerf@gmail.com" target="_blank">pedrocerf@gmail.com</a>
-
-
-
----
 
 ## 📄 Direitos Autorais
 
