@@ -698,11 +698,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const recipeContainer = document.getElementById('recipe-container');
         recipeContainer.classList.add('highlighted');
         
-        // Rolar para a seção de passo a passo em dispositivos móveis
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (isMobile) {
-            recipeContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        // Não rolar automaticamente para a seção de passo a passo em dispositivos móveis
+        // Apenas aplicar o destaque visual
     }
 
     // Função para atualizar o cronômetro
