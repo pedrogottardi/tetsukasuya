@@ -562,6 +562,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Destacar a seção de passo a passo
             highlightRecipeSection();
             
+            // Em dispositivos móveis, rolar para o cronômetro
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            if (isMobile) {
+                // Selecionar a seção do cronômetro
+                const timerSection = document.querySelector('.timer-section');
+                if (timerSection) {
+                    // Rolar para posicionar o cronômetro no topo da tela
+                    timerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+            
             // Atualizar o array de passos da receita
             updateRecipeStepsArray();
             
@@ -859,8 +870,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // Atualizar exibição do passo atual
-            elements.currentStep.textContent = timerState.recipeSteps[currentStepIndex].text;
+            // Verificar se o passo mudou
+            const currentStepText = timerState.recipeSteps[currentStepIndex].text;
+            const currentStepElement = elements.currentStep;
+            
+            // Se o texto do passo atual for diferente do que está sendo exibido, aplicar a animação
+            if (currentStepElement.textContent !== currentStepText) {
+                // Atualizar o texto do passo atual
+                currentStepElement.textContent = currentStepText;
+                
+                // Adicionar a classe para a animação
+                currentStepElement.classList.add('step-changed');
+                
+                // Remover a classe após a animação terminar
+                setTimeout(() => {
+                    currentStepElement.classList.remove('step-changed');
+                }, 1500);
+            }
             
             // Atualizar exibição do próximo passo
             if (nextStepIndex < timerState.recipeSteps.length) {
