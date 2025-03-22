@@ -1084,7 +1084,6 @@ button:hover {
     background-color: #f9f9f9;
     padding: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .footer-ad-container {
@@ -1127,5 +1126,31 @@ footer {
         padding: 5px;
         margin: 10px auto;
     }
+}
+
+/* Estilo para o botão Ko-fi */
+.kofi-button {
+    display: inline-block;
+    background-color: #FF5E5B;
+    color: white;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    font-size: 14px;
+}
+
+.kofi-button:hover {
+    background-color: #FF7775;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.kofi-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
