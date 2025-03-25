@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
         elapsedPausedTime: 0,
         recipeSteps: [],
         countdownActive: false,
-        countdownValue: CONSTANTS.COUNTDOWN_TIME
+        countdownValue: CONSTANTS.COUNTDOWN_TIME,
+        hasStarted: false,
+        updateInterval: null
     };
     
     // Flag para evitar loops infinitos nas atualizações
@@ -210,10 +212,18 @@ document.addEventListener('DOMContentLoaded', function() {
         setupLockButtons();
         setupTimerControls();
         setupResizeObserver();
+        setupDarkModeToggle();
+        setupMethodExplanationButton();
         
         // Selecionar cartões padrão inicialmente
         document.querySelector('[data-flavor="standard"]').classList.add('selected');
         document.querySelector('[data-body="standard"]').classList.add('selected');
+        
+        // Inicializar texto do cronômetro
+        elements.currentStep.textContent = 'Pronto para começar';
+        elements.nextStep.textContent = '';
+        elements.progressBar.style.display = 'none';
+        elements.timestampsContainer.style.display = 'none';
         
         // Gerar receita inicial
         generateRecipe();
@@ -537,47 +547,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Iniciar o cronômetro
                     startTimer();
                     
-                    // Reproduzir som de início (apenas em desktop, em mobile já tocou o beep.mp3)
-                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                    if (!isMobile) {
-                        audioElements.startBeep.play();
-                    }
+                    // Reproduzir som de início
+                    audioElements.startBeep.play();
                 }
             }, 1000);
-        }
-        
-        // Função para iniciar o cronômetro
-        function startTimer() {
-            // Configurar o tempo de início
-            timerState.startTime = Date.now();
-            timerState.isRunning = true;
-            
-            // Atualizar o botão
-            startBtn.textContent = 'Pausar';
-            startBtn.classList.add('pause');
-            
-            // Desabilitar os cartões de preferência
-            disablePreferenceCards();
-            
-            // Destacar a seção de passo a passo
-            highlightRecipeSection();
-            
-            // Em dispositivos móveis, rolar para o cronômetro
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            if (isMobile) {
-                // Selecionar a seção do cronômetro
-                const timerSection = document.querySelector('.timer-section');
-                if (timerSection) {
-                    // Rolar para posicionar o cronômetro no topo da tela
-                    timerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-            
-            // Atualizar o array de passos da receita
-            updateRecipeStepsArray();
-            
-            // Iniciar o intervalo de atualização do cronômetro
-            timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
         }
         
         // Adicionar listener para o botão de iniciar/pausar
@@ -589,42 +562,56 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Verificar se o cronômetro está em execução
             if (!timerState.isRunning) {
-                // Verificar se é um dispositivo móvel
-                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-                
-                // Em dispositivos móveis, tocar o beep.mp3 apenas uma vez no início da contagem regressiva
-                if (isMobile) {
-                    // Tocar o som apenas uma vez no início
-                    audioElements.startBeep.play();
+                // Se o cronômetro já foi iniciado e pausado, continuar de onde parou
+                if (timerState.startTime !== null && timerState.elapsedPausedTime > 0) {
+                    // Continuar de onde parou, sem contagem regressiva
+                    timerState.startTime = Date.now() - timerState.elapsedPausedTime;
+                    timerState.isRunning = true;
                     
-                    // Iniciar contagem regressiva sem sons adicionais
-                    timerState.countdownActive = true;
-                    timerState.countdownValue = CONSTANTS.COUNTDOWN_TIME;
+                    // Atualizar o botão
+                    startBtn.textContent = 'Pausar';
+                    startBtn.classList.add('pause');
                     
-                    // Atualizar o display para mostrar a contagem regressiva
-                    elements.timerDisplay.textContent = timerState.countdownValue.toString();
-                    
-                    // Iniciar o intervalo de contagem regressiva sem sons adicionais
-                    const countdownInterval = setInterval(() => {
-                        timerState.countdownValue--;
-                        
-                        if (timerState.countdownValue > 0) {
-                            // Atualizar o display
-                            elements.timerDisplay.textContent = timerState.countdownValue.toString();
-                            // Não tocar sons adicionais durante a contagem
-                        } else {
-                            // Contagem regressiva concluída
-                            clearInterval(countdownInterval);
-                            timerState.countdownActive = false;
-                            
-                            // Iniciar o cronômetro
-                            startTimer();
-                            // Não tocar som adicional ao iniciar
-                        }
-                    }, 1000);
+                    // Iniciar o intervalo de atualização do cronômetro
+                    timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
                 } else {
-                    // Em desktop, manter o comportamento original
-                    startCountdown();
+                    // Primeira inicialização - verificar se é um dispositivo móvel
+                    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                    
+                    // Em dispositivos móveis, tocar o beep.mp3 apenas uma vez no início da contagem regressiva
+                    if (isMobile) {
+                        // Tocar o som apenas uma vez no início
+                        audioElements.startBeep.play();
+                        
+                        // Iniciar contagem regressiva sem sons adicionais
+                        timerState.countdownActive = true;
+                        timerState.countdownValue = CONSTANTS.COUNTDOWN_TIME;
+                        
+                        // Atualizar o display para mostrar a contagem regressiva
+                        elements.timerDisplay.textContent = timerState.countdownValue.toString();
+                        
+                        // Iniciar o intervalo de contagem regressiva sem sons adicionais
+                        const countdownInterval = setInterval(() => {
+                            timerState.countdownValue--;
+                            
+                            if (timerState.countdownValue > 0) {
+                                // Atualizar o display
+                                elements.timerDisplay.textContent = timerState.countdownValue.toString();
+                                // Não tocar sons adicionais durante a contagem
+                            } else {
+                                // Contagem regressiva concluída
+                                clearInterval(countdownInterval);
+                                timerState.countdownActive = false;
+                                
+                                // Iniciar o cronômetro
+                                startTimer();
+                                // Não tocar som adicional ao iniciar
+                            }
+                        }, 1000);
+                    } else {
+                        // Em desktop, manter o comportamento original
+                        startCountdown();
+                    }
                 }
             } else {
                 // Pausar o cronômetro
@@ -646,12 +633,15 @@ document.addEventListener('DOMContentLoaded', function() {
             startBtn.classList.remove('pause');
             startBtn.disabled = false;
             elements.progressBar.style.width = '0%';
+            elements.progressBar.style.display = 'none';
+            elements.timestampsContainer.style.display = 'none';
             elements.currentStep.textContent = 'Pronto para começar';
-            elements.nextStep.textContent = 'Primeiro passo: Preparar o filtro';
+            elements.nextStep.textContent = '';
             timerState.isRunning = false;
             timerState.countdownActive = false;
             timerState.startTime = null;
             timerState.elapsedPausedTime = 0;
+            timerState.hasStarted = false;
             
             // Reabilitar os cartões de preferência
             enablePreferenceCards();
@@ -659,7 +649,79 @@ document.addEventListener('DOMContentLoaded', function() {
             // Remover destaque da seção de passo a passo
             const recipeContainer = document.getElementById('recipe-container');
             recipeContainer.classList.remove('highlighted');
+            
+            // Remover destaque de todos os passos
+            document.querySelectorAll('.step-text').forEach(step => {
+                step.classList.remove('current-recipe-step');
+            });
         });
+    }
+
+    // Função para iniciar o cronômetro
+    function startTimer() {
+        if (!timerState.isRunning) {
+            if (!timerState.hasStarted) {
+                timerState.hasStarted = true;
+                timerState.startTime = Date.now();
+                timerState.elapsedPausedTime = 0;
+                timerState.isRunning = true;
+                
+                // Mostrar barra de progresso e timestamps
+                elements.progressBar.style.display = 'block';
+                elements.timestampsContainer.style.display = 'block';
+                
+                // Atualizar o botão
+                elements.startBtn.textContent = 'Pausar';
+                elements.startBtn.classList.add('pause');
+                
+                // Desabilitar os cartões de preferência
+                disablePreferenceCards();
+                
+                // Destacar a seção de passo a passo
+                highlightRecipeSection();
+                
+                // Fazer scroll suave até o timer
+                const timerSection = document.querySelector('.timer-section');
+                if (timerSection) {
+                    timerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                
+                // Atualizar o array de passos da receita
+                updateRecipeStepsArray();
+                
+                // Destacar o primeiro passo imediatamente
+                highlightRecipeStep(0);
+                
+                // Atualizar informação do passo atual na interface
+                if (timerState.recipeSteps.length > 0) {
+                    elements.currentStep.textContent = timerState.recipeSteps[0].text;
+                    
+                    // Atualizar informação do próximo passo
+                    if (timerState.recipeSteps.length > 1) {
+                        const timeUntilNext = timerState.recipeSteps[1].time;
+                        elements.nextStep.textContent = `Próximo em ${timeUntilNext}s: ${timerState.recipeSteps[1].text}`;
+                    } else {
+                        elements.nextStep.textContent = '';
+                    }
+                }
+                
+                // Iniciar o intervalo de atualização do cronômetro
+                timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
+            } else if (timerState.elapsedPausedTime > 0) {
+                // Se estiver continuando após uma pausa
+                timerState.startTime = Date.now() - timerState.elapsedPausedTime;
+                timerState.isRunning = true;
+                
+                // Atualizar o botão
+                elements.startBtn.textContent = 'Pausar';
+                elements.startBtn.classList.add('pause');
+                
+                // Iniciar o intervalo de atualização do cronômetro
+                timerState.interval = setInterval(updateTimer, CONSTANTS.TIMER_UPDATE_INTERVAL);
+            }
+        } else {
+            pauseTimer();
+        }
     }
 
     // Função para desabilitar os cartões de preferência
@@ -725,7 +787,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Formatar para exibição
         const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        elements.timerDisplay.textContent = formattedTime;
+        
+        // Verificar se o tempo mudou
+        if (elements.timerDisplay.textContent !== formattedTime) {
+            elements.timerDisplay.textContent = formattedTime;
+            
+            // Adicionar animação sutil aos números
+            elements.timerDisplay.classList.add('timer-update');
+            setTimeout(() => {
+                elements.timerDisplay.classList.remove('timer-update');
+            }, 200);
+        }
         
         // Atualizar a barra de progresso e os passos
         updateProgressAndSteps(totalSeconds);
@@ -735,33 +807,38 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateRecipeStepsArray() {
         timerState.recipeSteps = [];
         
-        // Começar diretamente com a preparação do filtro (pulando a etapa de pesar o café)
-        timerState.recipeSteps.push({ time: 0, text: 'Preparar o filtro e pré-aquecer' });
-        
         // Obter os tempos dos ataques de água
         const times = [0, 45, 90, 135, 180, 225]; // em segundos (00:00, 00:45, 01:30, etc.)
         
-        // Obter os valores dos ataques de água da receita atual
-        const allPours = [];
+        // Obter os elementos dos passos da receita que contêm informações sobre despejo
+        const pourSteps = [];
         document.querySelectorAll('.step-text').forEach(step => {
-            if (step.textContent.includes('despeje')) {
-                const pourMatch = step.textContent.match(/despeje\s+(\d+)ml/);
-                if (pourMatch && pourMatch[1]) {
-                    allPours.push(parseInt(pourMatch[1]));
-                }
+            if (step.innerHTML.includes('despeje') || step.innerHTML.includes('Despeje')) {
+                pourSteps.push(step);
             }
         });
+        
+        console.log("Passos de despejo encontrados:", pourSteps.length);
         
         // Calcular o total acumulado para cada despejo
         let totalWater = 0;
         
         // Adicionar os passos de despejo com totais acumulados
-        for (let i = 0; i < Math.min(allPours.length, times.length); i++) {
-            totalWater += allPours[i];
-            timerState.recipeSteps.push({ 
-                time: times[i], 
-                text: `Despeje ${allPours[i]}ml de água (Total: ${totalWater}ml)` 
-            });
+        for (let i = 0; i < Math.min(pourSteps.length, times.length); i++) {
+            const step = pourSteps[i];
+            const pourMatch = step.innerHTML.match(/despeje\s+<strong>(\d+)ml<\/strong>/i);
+            
+            if (pourMatch && pourMatch[1]) {
+                const pourAmount = parseInt(pourMatch[1]);
+                totalWater += pourAmount;
+                
+                console.log(`Adicionando passo: tempo=${times[i]}s, água=${pourAmount}ml, total=${totalWater}ml`);
+                
+                timerState.recipeSteps.push({ 
+                    time: times[i], 
+                    text: `Despeje ${pourAmount}ml de água (Total: ${totalWater}ml)` 
+                });
+            }
         }
         
         // Obter o tempo final da receita
@@ -772,8 +849,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const finalStepElement = allStepTexts[allStepTexts.length - 1]; // Pegar o último elemento
         
         if (finalStepElement) {
-            console.log("Texto completo do passo final:", finalStepElement.innerHTML);
-            
             // Expressão regular para capturar o tempo no formato "aproximadamente <strong>X:XX</strong>"
             const timeMatch = finalStepElement.innerHTML.match(/aproximadamente\s+<strong>([0-9]+):([0-9]+)<\/strong>/);
             
@@ -783,35 +858,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 finalTime = minutes * 60 + seconds;
                 console.log(`Tempo final extraído: ${minutes}:${seconds} (${finalTime}s)`);
             } else {
-                // Método de fallback: extrair diretamente do texto
-                const finalTimeText = finalStepElement.textContent;
-                console.log("Texto do passo final (textContent):", finalTimeText);
-                
-                // Tentar extrair qualquer formato de tempo (X:XX)
-                const simpleTimeMatch = finalTimeText.match(/aproximadamente\s+([0-9]+):([0-9]+)/);
-                if (simpleTimeMatch && simpleTimeMatch[1] && simpleTimeMatch[2]) {
-                    const minutes = parseInt(simpleTimeMatch[1]);
-                    const seconds = parseInt(simpleTimeMatch[2]);
-                    finalTime = minutes * 60 + seconds;
-                    console.log(`Tempo final extraído (texto simples): ${minutes}:${seconds} (${finalTime}s)`);
-                } else {
-                    // Último recurso: usar o tempo do último ataque + 45 segundos
-                    const times = [0, 45, 90, 135, 180, 225];
-                    const allPours = document.querySelectorAll('.step-text').length - 2; // -2 para excluir o primeiro e último passos
-                    if (allPours > 0 && allPours < times.length) {
-                        finalTime = times[allPours] + CONSTANTS.FINAL_STEP_DELAY; // Último ataque + 45 segundos
-                        console.log(`Usando tempo calculado: ${Math.floor(finalTime/60)}:${(finalTime%60).toString().padStart(2, '0')} (${finalTime}s)`);
-                    } else {
-                        console.log("Usando tempo padrão de 4:15 (255s)");
-                    }
-                }
+                console.log("Usando tempo padrão: 4:15 (255s)");
             }
-        } else {
-            console.log("Elemento do passo final não encontrado");
         }
         
         // Adicionar passo final
-        timerState.recipeSteps.push({ time: finalTime, text: `Café pronto! ☕ (Total: ${totalWater}ml)` });
+        timerState.recipeSteps.push({ 
+            time: finalTime, 
+            text: `Café pronto! ☕ (Total: ${totalWater}ml)` 
+        });
+        
+        console.log("Passos do timer configurados:", timerState.recipeSteps);
         
         // Atualizar os timestamps na barra de progresso
         updateTimestamps(finalTime);
@@ -886,6 +943,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     currentStepElement.classList.remove('step-changed');
                 }, 1500);
+                
+                // Destacar o passo correspondente na seção de passo a passo
+                highlightRecipeStep(currentStepIndex);
             }
             
             // Atualizar exibição do próximo passo
@@ -895,6 +955,85 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 elements.nextStep.textContent = 'Último passo';
             }
+        }
+    }
+    
+    // Função para destacar o passo atual na seção de passo a passo
+    function highlightRecipeStep(currentStepIndex) {
+        // Remover destaque de todos os passos
+        document.querySelectorAll('.step-text').forEach(step => {
+            step.classList.remove('current-recipe-step');
+        });
+        
+        // Obter todos os elementos de passos
+        const stepElements = document.querySelectorAll('.step-text');
+        
+        // Mapear corretamente o índice do passo do timer para o índice na seção de passo a passo
+        let targetStepIndex = -1;
+        
+        // Corrigir a lógica de mapeamento para garantir que o passo correto seja destacado
+        if (currentStepIndex === 0) {
+            // Primeiro passo do timer (primeiro despejo em 00:00)
+            for (let i = 0; i < stepElements.length; i++) {
+                if (stepElements[i].innerHTML.includes('Em <strong>00:00</strong>') || 
+                    (stepElements[i].textContent.includes('Em 00:00') && stepElements[i].textContent.includes('despeje'))) {
+                    targetStepIndex = i;
+                    break;
+                }
+            }
+        } 
+        else if (currentStepIndex === timerState.recipeSteps.length - 1) {
+            // Último passo (Café pronto)
+            targetStepIndex = stepElements.length - 1;
+        } 
+        else {
+            // Passos intermediários (despejos)
+            const timeStrings = ["00:00", "00:45", "01:30", "02:15", "03:00", "03:45"];
+            // Usar diretamente o índice atual para buscar o tempo correspondente
+            const timeToFind = timeStrings[currentStepIndex] || "00:00";
+            
+            for (let i = 0; i < stepElements.length; i++) {
+                // Buscar pelo HTML para considerar as tags strong
+                if (stepElements[i].innerHTML.includes(`Em <strong>${timeToFind}</strong>`)) {
+                    targetStepIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        // Se ainda não encontrou, tente uma busca mais ampla
+        if (targetStepIndex === -1 && currentStepIndex > 0) {
+            // Procurar por qualquer passo que inclua "despeje"
+            for (let i = 0; i < stepElements.length; i++) {
+                if (stepElements[i].textContent.includes('despeje')) {
+                    // Pegar o último encontrado para índices maiores
+                    targetStepIndex = i;
+                    // Para índices intermediários, não quebrar o loop para encontrar o último
+                    if (currentStepIndex === timerState.recipeSteps.length - 2) break;
+                }
+            }
+        }
+        
+        // Verificar se encontramos um passo válido
+        if (targetStepIndex >= 0 && targetStepIndex < stepElements.length) {
+            // Resetar qualquer animação existente
+            const targetElement = stepElements[targetStepIndex];
+            targetElement.style.animation = 'none';
+            
+            // Forçar um reflow para reiniciar a animação
+            void targetElement.offsetWidth;
+            
+            // Limpar o estilo inline e adicionar a classe para animação
+            targetElement.style.animation = '';
+            targetElement.style.opacity = '1';
+            targetElement.classList.add('current-recipe-step');
+            
+            // Rolar para o passo destacado se estiver fora da área visível
+            targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            
+            console.log("Passo destacado:", targetStepIndex, "Texto:", targetElement.textContent);
+        } else {
+            console.log("Não foi possível encontrar um passo correspondente para o índice:", currentStepIndex);
         }
     }
 
@@ -931,6 +1070,343 @@ document.addEventListener('DOMContentLoaded', function() {
             subtree: true,
             characterData: true 
         });
+    }
+
+    // Função para alternar entre modo claro e escuro
+    function setupDarkModeToggle() {
+        const darkModeToggle = document.createElement('button');
+        darkModeToggle.className = 'dark-mode-toggle';
+        darkModeToggle.setAttribute('aria-label', 'Alternar modo escuro');
+        document.body.appendChild(darkModeToggle);
+
+        // Verifica se há preferência salva
+        const darkModeSaved = localStorage.getItem('darkMode') === 'true';
+        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Aplica o modo escuro se estiver salvo ou se o sistema preferir
+        if (darkModeSaved || (prefersDarkMode && localStorage.getItem('darkMode') === null)) {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+        }
+
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.add('mode-transition');
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            
+            setTimeout(() => {
+                document.body.classList.remove('mode-transition');
+            }, 500);
+        });
+    }
+    
+    // Adicionar estilos CSS para animação de entrada/saída dos passos
+    function addAdditionalStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            .step-text {
+                transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+            }
+            
+            .step-text.current-recipe-step {
+                animation: stepHighlight 1.5s ease;
+                animation-fill-mode: forwards;
+            }
+            
+            @keyframes stepEnter {
+                from {
+                    opacity: 0;
+                    transform: translateX(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(5px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Adicionar os estilos adicionais
+    addAdditionalStyles();
+
+    // Função para configurar o botão de explicação do método
+    function setupMethodExplanationButton() {
+        const explanationBtn = document.querySelector('.method-explanation-btn');
+        
+        if (explanationBtn) {
+            explanationBtn.addEventListener('click', function() {
+                showMethodExplanation();
+            });
+        }
+    }
+
+    // Função para exibir a explicação do método
+    function showMethodExplanation() {
+        // Texto de explicação do método
+        const explanationText = `
+            <div class="tetsu-photo-container">
+                <img src="images/tetsu-kasuya.jpg" alt="Tetsu Kasuya" class="tetsu-photo">
+            </div>
+            
+            <h3>Tetsu Kasuya</h3>
+            <p>Barista japonês, campeão mundial de Brewers Cup em 2016. Criou o método 4:6, uma técnica que permite controlar precisamente o sabor do café dividindo a água em porções estratégicas.</p>
+            
+            <h4>Por que "4:6"?</h4>
+            <p>O nome se refere à divisão da água utilizada na receita: <strong>40%</strong> controlam o sabor <em>(acidez e doçura)</em> e <strong>60%</strong> controlam o corpo do café.</p>
+            
+            <div class="ratio-visualization">
+                <div class="ratio-part-4">40% Sabor</div>
+                <div class="ratio-part-6">60% Corpo</div>
+            </div>
+            <div class="ratio-labels">
+                <span>Primeiros 2 despejamentos</span>
+                <span>Despejamentos restantes</span>
+            </div>
+            
+            <div class="ratio-buttons">
+                <div class="ratio-section">
+                    <div class="ratio-btn-group">
+                        <button class="ratio-btn ratio-balanced" data-type="balanced" data-category="reset">Padrão</button>
+                        <button class="ratio-btn ratio-acidic" data-type="acidic" data-category="flavor">Mais ácido</button>
+                        <button class="ratio-btn ratio-sweet" data-type="sweet" data-category="flavor">Mais doce</button>
+                    </div>
+                </div>
+                <div class="ratio-section">
+                    <div class="ratio-btn-group">
+                        <button class="ratio-btn ratio-full" data-type="full" data-category="body">Mais corpo</button>
+                        <button class="ratio-btn ratio-light" data-type="light" data-category="body">Menos corpo</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ratio-details">
+                <p class="ratio-description">
+                    <strong>Configuração equilibrada:</strong> Ataques iguais para acidez e doçura balanceadas, com três porções iguais para corpo moderado.
+                </p>
+            </div>
+        
+            <div class="tips-section">
+                <h4>Dicas para o melhor preparo:</h4>
+                <ul>
+                    <li><strong>Equipamento:</strong> Ideal para Hario v60 ou métodos similares.</li>
+                    <li><strong>Café:</strong> Use grãos frescos moídos na hora, moagem média-grossa/grossa.</li>
+                    <li><strong>Água:</strong> 92-96°C, utilize chaleira com bico de ganso para controle preciso do fluxo.</li>
+                    <li><strong>Ataques:</strong> Movimentos circulares suaves.</li>
+                    <li><strong>Tempo:</strong> Respeite os intervalos entre os ataques para extração ideal.</li>
+                    <li><strong>Filtro:</strong> Pré-enxágue o filtro com água quente para remover gosto de papel.</li>
+                </ul>
+            </div>
+        `;
+        
+        // Criar o modal
+        const modal = document.createElement('div');
+        modal.className = 'method-explanation-modal';
+        
+        const modalContent = document.createElement('div');
+        modalContent.className = 'method-explanation-modal-content';
+        modalContent.innerHTML = explanationText;
+        
+        const closeButton = document.createElement('button');
+        closeButton.className = 'method-explanation-modal-close';
+        closeButton.innerHTML = '&times;';
+        closeButton.addEventListener('click', function() {
+            document.body.removeChild(modal);
+        });
+        
+        modalContent.prepend(closeButton);
+        modal.appendChild(modalContent);
+        document.body.appendChild(modal);
+        
+        // Adicionar interatividade aos botões de proporção
+        setupRatioButtons(modal);
+        
+        // Fechar o modal ao clicar fora dele
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                document.body.removeChild(modal);
+            }
+        });
+    }
+
+    // Função para configurar os botões de proporção interativos
+    function setupRatioButtons(modal) {
+        const ratioButtons = modal.querySelectorAll('.ratio-btn');
+        const ratioPart4 = modal.querySelector('.ratio-part-4');
+        const ratioPart6 = modal.querySelector('.ratio-part-6');
+        const ratioDescription = modal.querySelector('.ratio-description');
+        const ratioLabels = modal.querySelector('.ratio-labels');
+        
+        // Armazenar as escolhas do usuário
+        const userChoices = {
+            flavor: null, // acidic, sweet, balanced ou null para padrão
+            body: null    // full, light ou null para padrão
+        };
+        
+        // Configurações para cada tipo de sabor (primeiros 40%)
+        const flavorConfigs = {
+            'balanced': {
+                firstPour: 20,
+                secondPour: 20,
+                desc: 'Ataques iguais para acidez e doçura balanceadas'
+            },
+            'acidic': {
+                firstPour: 24,
+                secondPour: 16,
+                desc: 'Primeiro ataque maior que o segundo, destacando as notas ácidas'
+            },
+            'sweet': {
+                firstPour: 16, 
+                secondPour: 24,
+                desc: 'Segundo ataque maior que o primeiro, realçando a doçura'
+            },
+            'default': {
+                firstPour: 20,
+                secondPour: 20,
+                desc: 'Ataques iguais (configuração padrão)'
+            }
+        };
+        
+        // Configurações para cada tipo de corpo (últimos 60%)
+        const bodyConfigs = {
+            'standard': {
+                bodySplit: 3,
+                desc: 'Três ataques para corpo equilibrado'
+            },
+            'full': {
+                bodySplit: 4,
+                desc: 'Quatro ataques menores para maior corpo'
+            },
+            'light': {
+                bodySplit: 2,
+                desc: 'Dois ataques para corpo mais leve'
+            },
+            'default': {
+                bodySplit: 3,
+                desc: 'Três ataques iguais (configuração padrão)'
+            }
+        };
+
+        // Função para resetar as seleções
+        function resetSelections() {
+            // Remover classe ativa de todos os botões
+            ratioButtons.forEach(btn => {
+                if (btn.getAttribute('data-category') !== 'reset') {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Resetar as escolhas do usuário
+            userChoices.flavor = null;
+            userChoices.body = null;
+            
+            // Atualizar o botão de reset para ficar ativo
+            const resetButton = modal.querySelector('.ratio-btn[data-category="reset"]');
+            if (resetButton) {
+                resetButton.classList.add('active');
+            }
+            
+            // Atualizar a visualização para o padrão
+            updateRatioVisualization();
+        }
+        
+        // Função para atualizar a visualização com base nas escolhas do usuário
+        function updateRatioVisualization() {
+            // Usar configurações padrão se nenhuma escolha foi feita
+            const flavorConfig = userChoices.flavor ? flavorConfigs[userChoices.flavor] : flavorConfigs.default;
+            const bodyConfig = userChoices.body ? bodyConfigs[userChoices.body] : bodyConfigs.default;
+            
+            // Atualizar a proporção visual dos primeiros 40% (sabor)
+            const firstRatio = flavorConfig.firstPour / (flavorConfig.firstPour + flavorConfig.secondPour);
+            
+            // Criar divisões dentro dos primeiros 40%
+            ratioPart4.innerHTML = `<div style="width:${firstRatio * 100}%; height:100%; display:flex; align-items:center; justify-content:center; background-color:rgba(var(--primary-rgb), 0.8);">${flavorConfig.firstPour}%</div>
+            <div style="width:${(1-firstRatio) * 100}%; height:100%; display:flex; align-items:center; justify-content:center;">${flavorConfig.secondPour}%</div>`;
+            
+            // Criar divisões para o corpo (60%)
+            let bodySections = '';
+            const sectionWidth = 100 / bodyConfig.bodySplit;
+            const sectionPercent = Math.round(60 / bodyConfig.bodySplit);
+            
+            for (let i = 0; i < bodyConfig.bodySplit; i++) {
+                const sectionOpacity = 0.5 + (i * 0.5 / bodyConfig.bodySplit);
+                bodySections += `<div style="width:${sectionWidth}%; height:100%; display:flex; align-items:center; justify-content:center; background-color:rgba(var(--primary-rgb), ${sectionOpacity});">${sectionPercent}%</div>`;
+            }
+            
+            ratioPart6.innerHTML = bodySections;
+            
+            // Padronizar o ratio-labels quando no modo padrão
+            if (!userChoices.flavor && !userChoices.body) {
+                ratioLabels.innerHTML = '<span>Primeiros 2 ataques</span><span>Ataques restantes</span>';
+                ratioDescription.innerHTML = '<strong>Configuração padrão:</strong> Ataques iguais para equilíbrio entre acidez e doçura, com três ataques finais para corpo moderado.';
+                return;
+            }
+            
+            // Atualizar as etiquetas para modos específicos
+            let labelText = '';
+            if (bodyConfig.bodySplit === 2) {
+                labelText = '<span>Primeiros 2 ataques</span><span>Apenas 2 ataques finais</span>';
+            } else if (bodyConfig.bodySplit === 4) {
+                labelText = '<span>Primeiros 2 ataques</span><span>4 ataques menores</span>';
+            } else {
+                labelText = '<span>Primeiros 2 ataques</span><span>3 ataques finais</span>';
+            }
+            ratioLabels.innerHTML = labelText;
+            
+            // Atualizar a descrição combinando as escolhas de sabor e corpo
+            let flavorText = userChoices.flavor ? 
+                (userChoices.flavor === 'acidic' ? 'Mais acidez' : 
+                 userChoices.flavor === 'sweet' ? 'Mais doçura' : 'Equilíbrio') : 'Equilíbrio';
+                
+            let bodyText = userChoices.body ? 
+                (userChoices.body === 'full' ? 'mais corpo' : 
+                 userChoices.body === 'light' ? 'menos corpo' : 'corpo moderado') : 'corpo moderado';
+            
+            ratioDescription.innerHTML = `<strong>${flavorText}</strong> com <strong>${bodyText}</strong>: ${flavorConfig.desc}, ${bodyConfig.desc.toLowerCase()}.`;
+        }
+        
+        // Adicionar listeners de eventos aos botões
+        ratioButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const type = this.getAttribute('data-type');
+                const category = this.getAttribute('data-category');
+                
+                if (!type || !category) return;
+                
+                // Se for o botão de reset
+                if (category === 'reset') {
+                    resetSelections();
+                    return;
+                }
+                
+                // Remover classe active do botão de reset
+                const resetButton = modal.querySelector('.ratio-btn[data-category="reset"]');
+                if (resetButton) {
+                    resetButton.classList.remove('active');
+                }
+                
+                // Remover classe ativa apenas dos botões da mesma categoria
+                modal.querySelectorAll(`.ratio-btn[data-category="${category}"]`).forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Adicionar classe ativa ao botão clicado
+                this.classList.add('active');
+                
+                // Atualizar as escolhas do usuário
+                if (category === 'flavor') {
+                    userChoices.flavor = type;
+                } else if (category === 'body') {
+                    userChoices.body = type;
+                }
+                
+                // Atualizar a visualização
+                updateRatioVisualization();
+            });
+        });
+        
+        // Inicializar com a configuração padrão (resetada)
+        resetSelections();
     }
 
     // Iniciar a aplicação

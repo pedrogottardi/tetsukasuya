@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)">
     <title>Método 4:6 - Tetsu Kasuya</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
@@ -16,6 +18,7 @@
         <header>
             <h1>Método Tetsu Kasuya (4:6)</h1>
             <div class="divider"></div>
+            <button class="method-explanation-btn"><em>Entenda o método</em></button>
         </header>
         <div class="main-content">
             <div class="left-column">
@@ -100,32 +103,32 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Novo cronômetro interativo -->
-                    <div class="timer-section">
-                        <h2>Cronômetro</h2>
-                        <div class="timer-container">
-                            <div class="timer-display">00:00</div>
-                            <div class="timer-controls">
-                                <button id="timer-start" class="timer-btn">Iniciar</button>
-                                <button id="timer-reset" class="timer-btn">Reiniciar</button>
-                            </div>
-                            <div class="timer-progress">
-                                <div class="timer-progress-bar"></div>
-                                <div class="timer-timestamps" id="timer-timestamps">
-                                    <!-- Os timestamps serão gerados dinamicamente via JavaScript -->
-                                </div>
-                            </div>
-                            <div class="timer-step-info">
-                                <div class="current-step">Pronto para começar</div>
-                                <div class="next-step">Primeiro passo: Pesar o café</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
             <div class="right-column">
+                <!-- Cronômetro movido para a coluna direita -->
+                <div class="timer-section">
+                    <h2>Cronômetro</h2>
+                    <div class="timer-container">
+                        <div class="timer-display">00:00</div>
+                        <div class="timer-controls">
+                            <button id="timer-start" class="timer-btn">Iniciar</button>
+                            <button id="timer-reset" class="timer-btn">Reiniciar</button>
+                        </div>
+                        <div class="timer-progress">
+                            <div class="timer-progress-bar"></div>
+                            <div class="timer-timestamps" id="timer-timestamps">
+                                <!-- Os timestamps serão gerados dinamicamente via JavaScript -->
+                            </div>
+                        </div>
+                        <div class="timer-step-info">
+                            <div class="current-step">Pronto para começar</div>
+                            <div class="next-step">Primeiro passo: Pesar o café</div>
+                        </div>
+                    </div>
+                </div>
+            
                 <div class="recipe-container" id="recipe-container">
                     <h3>Passo a passo:</h3>
                     <div class="recipe-details">
@@ -141,12 +144,8 @@
                     </div>
                 </div>
                 
-                <!-- Anúncio do Google AdSense abaixo da receita -->
-                <div class="ad-container">
-                    <a href="https://ko-fi.com/pedrogott" target="_blank" class="kofi-button">
-                        ☕ Compre-me um café
-                    </a>
-                </div>
+                <!-- Botão Ko-fi -->
+                <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" class="kofi-button">Compre-me um café ☕</a>
             </div>
         </div>
     </div>
@@ -155,12 +154,10 @@
         <div class="footer-content">
             <p>&copy; 2025 CoffeeGen. Todos os direitos reservados.</p>
             <p>Desenvolvido por Pedro Gottardi</p>
-            <p><a href="privacy-policy.html" style="color: #fff; text-decoration: underline;">Política de Privacidade</a></p>
         </div>
     </footer>
     
     <script src="script.js"></script>
-    <script src="cookie-consent.js"></script>
     <script>
       // Adicionar script para ajustar a visualização em dispositivos móveis
       document.addEventListener('DOMContentLoaded', function() {
@@ -175,55 +172,17 @@
             // Armazenar o texto original como atributo de dados
             const descText = card.querySelector('p').textContent;
             card.setAttribute('data-description', descText);
-            
-            // Adicionar tooltip para mostrar a descrição ao tocar
-            card.addEventListener('click', function() {
-              // Mostrar tooltip com a descrição
-              const tooltip = document.createElement('div');
-              tooltip.className = 'mobile-tooltip';
-              tooltip.textContent = this.getAttribute('data-description');
-              
-              // Posicionar o tooltip
-              document.body.appendChild(tooltip);
-              
-              // Remover o tooltip após 2 segundos
-              setTimeout(() => {
-                if (tooltip.parentNode) {
-                  tooltip.parentNode.removeChild(tooltip);
-                }
-              }, 2000);
-            });
           });
+        }
+        
+        // Verificar preferência de modo escuro do sistema
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          // O usuário prefere o modo escuro no sistema e ainda não definiu uma preferência
+          if (localStorage.getItem('darkMode') === null) {
+            localStorage.setItem('darkMode', 'true');
+          }
         }
       });
     </script>
-    <style>
-      /* Estilo para o tooltip móvel */
-      .mobile-tooltip {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 8px 12px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        z-index: 1000;
-        max-width: 80%;
-        text-align: center;
-        animation: fadeIn 0.3s, fadeOut 0.3s 1.7s;
-      }
-      
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      
-      @keyframes fadeOut {
-        from { opacity: 1; }
-        to { opacity: 0; }
-      }
-    </style>
 </body>
 </html> 
