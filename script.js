@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ANIMATION_DELAY: 300,
         COUNTDOWN_TIME: 3,
         TIMER_UPDATE_INTERVAL: 100,
-        FINAL_STEP_DELAY: 45, // 45 segundos após o último despejo
+        FINAL_STEP_DELAY: 45, // 45 segundos após o último ataque
         SOUNDS: {
             COUNTDOWN: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAAFWgD///////////////////////////////////////////8AAAA8TEFNRTMuMTAwBK8AAAAAAAAAABSAJAJAQgAAgAAAA+gZ4JwXAAAAAAAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxBYAE7ABI6AAAIJgCR0AAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV',
             START: 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tAwAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAAFWgD///////////////////////////////////////////8AAAA8TEFNRTMuMTAwBK8AAAAAAAAAABSAJAJAQgAAgAAAA+gZ4KQXAAAAAAAAAAAAAAAAAAAA//sQxAADwAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//sQxBYAFBABIaAAAIKKAGQ0AAAQVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
@@ -206,6 +206,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const audioElements = setupAudioContext();
     
     // Inicialização - configurar listeners e estado inicial
+    function initDarkMode() {
+        // Define o modo escuro como padrão
+        document.body.classList.add('dark-mode');
+        
+        // Salva a preferência no localStorage
+        localStorage.setItem('darkMode', 'true');
+    }
+
     function init() {
         setupPreferenceCards();
         setupInputListeners();
@@ -455,16 +463,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const timeText = times[index];
             const step = createStep(
                 stepNumber++, 
-                `Em <strong>${timeText}</strong>, despeje <strong>${pour}ml</strong> de água (total: <strong>${totalWater}ml</strong>).`
+                `Em <strong>${timeText}</strong>, ataque <strong>${pour}ml</strong> de água (total: <strong>${totalWater}ml</strong>).`
             );
             elements.recipeSteps.appendChild(step);
         });
         
-        // Calcular o tempo final (45 segundos após o último despejo)
+        // Calcular o tempo final (45 segundos após o último ataque)
         const lastPourIndex = allPours.length - 1;
         const lastPourTimeStr = times[lastPourIndex] || "00:00";
         
-        // Converter o tempo do último despejo para segundos
+        // Converter o tempo do último ataque para segundos
         const [lastMinStr, lastSecStr] = lastPourTimeStr.split(":");
         const lastMinutes = parseInt(lastMinStr);
         const lastSeconds = parseInt(lastSecStr);
@@ -810,23 +818,23 @@ document.addEventListener('DOMContentLoaded', function() {
         // Obter os tempos dos ataques de água
         const times = [0, 45, 90, 135, 180, 225]; // em segundos (00:00, 00:45, 01:30, etc.)
         
-        // Obter os elementos dos passos da receita que contêm informações sobre despejo
+        // Obter os elementos dos passos da receita que contêm informações sobre ataque
         const pourSteps = [];
         document.querySelectorAll('.step-text').forEach(step => {
-            if (step.innerHTML.includes('despeje') || step.innerHTML.includes('Despeje')) {
+            if (step.innerHTML.includes('ataque') || step.innerHTML.includes('Ataque')) {
                 pourSteps.push(step);
             }
         });
         
-        console.log("Passos de despejo encontrados:", pourSteps.length);
+        console.log("Passos de ataque encontrados:", pourSteps.length);
         
-        // Calcular o total acumulado para cada despejo
+        // Calcular o total acumulado para cada ataque
         let totalWater = 0;
         
-        // Adicionar os passos de despejo com totais acumulados
+        // Adicionar os passos de ataque com totais acumulados
         for (let i = 0; i < Math.min(pourSteps.length, times.length); i++) {
             const step = pourSteps[i];
-            const pourMatch = step.innerHTML.match(/despeje\s+<strong>(\d+)ml<\/strong>/i);
+            const pourMatch = step.innerHTML.match(/ataque\s+<strong>(\d+)ml<\/strong>/i);
             
             if (pourMatch && pourMatch[1]) {
                 const pourAmount = parseInt(pourMatch[1]);
@@ -836,7 +844,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 timerState.recipeSteps.push({ 
                     time: times[i], 
-                    text: `Despeje ${pourAmount}ml de água (Total: ${totalWater}ml)` 
+                    text: `Ataque ${pourAmount}ml de água (Total: ${totalWater}ml)` 
                 });
             }
         }
@@ -973,10 +981,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Corrigir a lógica de mapeamento para garantir que o passo correto seja destacado
         if (currentStepIndex === 0) {
-            // Primeiro passo do timer (primeiro despejo em 00:00)
+            // Primeiro passo do timer (primeiro ataque em 00:00)
             for (let i = 0; i < stepElements.length; i++) {
                 if (stepElements[i].innerHTML.includes('Em <strong>00:00</strong>') || 
-                    (stepElements[i].textContent.includes('Em 00:00') && stepElements[i].textContent.includes('despeje'))) {
+                    (stepElements[i].textContent.includes('Em 00:00') && stepElements[i].textContent.includes('ataque'))) {
                     targetStepIndex = i;
                     break;
                 }
@@ -987,7 +995,7 @@ document.addEventListener('DOMContentLoaded', function() {
             targetStepIndex = stepElements.length - 1;
         } 
         else {
-            // Passos intermediários (despejos)
+            // Passos intermediários (ataques)
             const timeStrings = ["00:00", "00:45", "01:30", "02:15", "03:00", "03:45"];
             // Usar diretamente o índice atual para buscar o tempo correspondente
             const timeToFind = timeStrings[currentStepIndex] || "00:00";
@@ -1003,9 +1011,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Se ainda não encontrou, tente uma busca mais ampla
         if (targetStepIndex === -1 && currentStepIndex > 0) {
-            // Procurar por qualquer passo que inclua "despeje"
+            // Procurar por qualquer passo que inclua "ataque"
             for (let i = 0; i < stepElements.length; i++) {
-                if (stepElements[i].textContent.includes('despeje')) {
+                if (stepElements[i].textContent.includes('ataque')) {
                     // Pegar o último encontrado para índices maiores
                     targetStepIndex = i;
                     // Para índices intermediários, não quebrar o loop para encontrar o último
@@ -1079,24 +1087,28 @@ document.addEventListener('DOMContentLoaded', function() {
         darkModeToggle.setAttribute('aria-label', 'Alternar modo escuro');
         document.body.appendChild(darkModeToggle);
 
-        // Verifica se há preferência salva
-        const darkModeSaved = localStorage.getItem('darkMode') === 'true';
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        // Aplica o modo escuro se estiver salvo ou se o sistema preferir
-        if (darkModeSaved || (prefersDarkMode && localStorage.getItem('darkMode') === null)) {
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-        }
+        // Aplicar tema escuro já é feito no carregamento da página
 
         darkModeToggle.addEventListener('click', () => {
-            document.body.classList.add('mode-transition');
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            // Se estiver saindo do modo escuro para o claro, adiciona a classe de transição
+            if (document.body.classList.contains('dark-mode')) {
+                document.body.classList.add('mode-transition');
+            }
             
-            setTimeout(() => {
-                document.body.classList.remove('mode-transition');
-            }, 500);
+            // Toggle do modo escuro
+            document.body.classList.toggle('dark-mode');
+            document.documentElement.classList.toggle('dark-theme');
+            
+            // Salvar preferência
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            // Remover classe de transição após a conclusão
+            if (!isDarkMode) {
+                setTimeout(() => {
+                    document.body.classList.remove('mode-transition');
+                }, 500);
+            }
         });
     }
     
@@ -1150,7 +1162,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             
             <h3>Tetsu Kasuya</h3>
-            <p>Barista japonês, campeão mundial de Brewers Cup em 2016. Criou o método 4:6, uma técnica que permite controlar precisamente o sabor do café dividindo a água em porções estratégicas.</p>
+            <p>Barista japonês, campeão mundial de Brewers Cup em 2016. Criou o método 4:6, uma técnica que permite controlar precisamente o sabor do café dividindo a água em ataques estratégicos.</p>
             
             <h4>Por que "4:6"?</h4>
             <p>O nome se refere à divisão da água utilizada na receita: <strong>40%</strong> controlam o sabor <em>(acidez e doçura)</em> e <strong>60%</strong> controlam o corpo do café.</p>
@@ -1160,8 +1172,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="ratio-part-6">60% Corpo</div>
             </div>
             <div class="ratio-labels">
-                <span>Primeiros 2 despejamentos</span>
-                <span>Despejamentos restantes</span>
+                <span>Primeiros 2 ataques</span>
+                <span>Ataques restantes</span>
             </div>
             
             <div class="ratio-buttons">
@@ -1179,25 +1191,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             </div>
-            
-            <div class="ratio-details">
-                <p class="ratio-description">
-                    <strong>Configuração equilibrada:</strong> Ataques iguais para acidez e doçura balanceadas, com três porções iguais para corpo moderado.
-                </p>
-            </div>
         
             <div class="tips-section">
                 <h4>Dicas para o melhor preparo:</h4>
                 <ul>
-                    <li><strong>Equipamento:</strong> Ideal para Hario v60 ou métodos similares.</li>
-                    <li><strong>Café:</strong> Use grãos frescos moídos na hora, moagem média-grossa/grossa.</li>
-                    <li><strong>Água:</strong> 92-96°C, utilize chaleira com bico de ganso para controle preciso do fluxo.</li>
-                    <li><strong>Ataques:</strong> Movimentos circulares suaves.</li>
-                    <li><strong>Tempo:</strong> Respeite os intervalos entre os ataques para extração ideal.</li>
+                    <li><strong>Equipamento:</strong> Ideal para Hario v60 ou métodos similares;</li>
+                    <li><strong>Café:</strong> Use grãos frescos moídos na hora, moagem média-grossa;</li>
+                    <li><strong>Água:</strong> 92-96°C, utilize chaleira com bico de ganso para controle preciso do fluxo;</li>
+                    <li><strong>Ataque:</strong> Movimentos circulares suaves, mantenha distância constante entre a chaleira e o café;</li>
+                    <li><strong>Tempo:</strong> Respeite os intervalos entre os ataques para extração ideal;</li>
                     <li><strong>Filtro:</strong> Pré-enxágue o filtro com água quente para remover gosto de papel.</li>
                 </ul>
             </div>
         `;
+        
+        // Bloquear o scroll da página
+        document.body.classList.add('modal-open');
         
         // Criar o modal
         const modal = document.createElement('div');
@@ -1212,6 +1221,8 @@ document.addEventListener('DOMContentLoaded', function() {
         closeButton.innerHTML = '&times;';
         closeButton.addEventListener('click', function() {
             document.body.removeChild(modal);
+            // Desbloquear o scroll da página quando o modal for fechado
+            document.body.classList.remove('modal-open');
         });
         
         modalContent.prepend(closeButton);
@@ -1225,6 +1236,8 @@ document.addEventListener('DOMContentLoaded', function() {
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
                 document.body.removeChild(modal);
+                // Desbloquear o scroll da página quando o modal for fechado
+                document.body.classList.remove('modal-open');
             }
         });
     }
@@ -1234,7 +1247,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const ratioButtons = modal.querySelectorAll('.ratio-btn');
         const ratioPart4 = modal.querySelector('.ratio-part-4');
         const ratioPart6 = modal.querySelector('.ratio-part-6');
-        const ratioDescription = modal.querySelector('.ratio-description');
         const ratioLabels = modal.querySelector('.ratio-labels');
         
         // Armazenar as escolhas do usuário
@@ -1271,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const bodyConfigs = {
             'standard': {
                 bodySplit: 3,
-                desc: 'Três ataques para corpo equilibrado'
+                desc: 'Três ataques iguais para corpo moderado'
             },
             'full': {
                 bodySplit: 4,
@@ -1279,7 +1291,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             'light': {
                 bodySplit: 2,
-                desc: 'Dois ataques para corpo mais leve'
+                desc: 'Apenas dois ataques para corpo mais leve'
             },
             'default': {
                 bodySplit: 3,
@@ -1338,7 +1350,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // Padronizar o ratio-labels quando no modo padrão
             if (!userChoices.flavor && !userChoices.body) {
                 ratioLabels.innerHTML = '<span>Primeiros 2 ataques</span><span>Ataques restantes</span>';
-                ratioDescription.innerHTML = '<strong>Configuração padrão:</strong> Ataques iguais para equilíbrio entre acidez e doçura, com três ataques finais para corpo moderado.';
                 return;
             }
             
@@ -1352,17 +1363,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 labelText = '<span>Primeiros 2 ataques</span><span>3 ataques finais</span>';
             }
             ratioLabels.innerHTML = labelText;
-            
-            // Atualizar a descrição combinando as escolhas de sabor e corpo
-            let flavorText = userChoices.flavor ? 
-                (userChoices.flavor === 'acidic' ? 'Mais acidez' : 
-                 userChoices.flavor === 'sweet' ? 'Mais doçura' : 'Equilíbrio') : 'Equilíbrio';
-                
-            let bodyText = userChoices.body ? 
-                (userChoices.body === 'full' ? 'mais corpo' : 
-                 userChoices.body === 'light' ? 'menos corpo' : 'corpo moderado') : 'corpo moderado';
-            
-            ratioDescription.innerHTML = `<strong>${flavorText}</strong> com <strong>${bodyText}</strong>: ${flavorConfig.desc}, ${bodyConfig.desc.toLowerCase()}.`;
         }
         
         // Adicionar listeners de eventos aos botões
@@ -1410,5 +1410,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Iniciar a aplicação
+    initDarkMode(); // Inicializa o modo escuro antes de qualquer coisa
     init();
 });

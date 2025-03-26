@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark-theme">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1e1e1e" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#1e1e1e">
     <title>Método 4:6 - Tetsu Kasuya</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
@@ -12,8 +11,16 @@
     <meta property="og:title" content="Método 4:6 - Tetsu Kasuya">
     <meta property="og:description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
     <meta property="og:type" content="website">
+    <script>
+        // Aplicar tema escuro imediatamente para evitar flash
+        document.documentElement.classList.add('dark-theme');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'true');
+        });
+    </script>
 </head>
-<body>
+<body class="dark-mode">
     <div class="container">
         <header>
             <h1>Método Tetsu Kasuya (4:6)</h1>
