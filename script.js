@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const timeText = times[index];
             const step = createStep(
                 stepNumber++, 
-                `Em <strong>${timeText}</strong>, ataque <strong>${pour}ml</strong> de água (total: <strong>${totalWater}ml</strong>).`
+                `Em <strong>${timeText}</strong>, despeje <strong>${pour}ml</strong> de água (total: <strong>${totalWater}ml</strong>).`
             );
             elements.recipeSteps.appendChild(step);
         });
@@ -818,12 +818,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Obter os tempos dos ataques de água
         const times = [0, 45, 90, 135, 180, 225]; // em segundos (00:00, 00:45, 01:30, etc.)
         
-        // Obter os elementos dos passos da receita que contêm informações sobre ataque
-        const pourSteps = [];
-        document.querySelectorAll('.step-text').forEach(step => {
-            if (step.innerHTML.includes('ataque') || step.innerHTML.includes('Ataque')) {
-                pourSteps.push(step);
-            }
+        // Obter os elementos dos passos da receita que contêm informações sobre despeje
+        const pourSteps = Array.from(document.querySelectorAll('.step-text')).filter(step => {
+            return step.innerHTML.includes('despeje') || step.innerHTML.includes('Despeje');
         });
         
         console.log("Passos de ataque encontrados:", pourSteps.length);
@@ -834,7 +831,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Adicionar os passos de ataque com totais acumulados
         for (let i = 0; i < Math.min(pourSteps.length, times.length); i++) {
             const step = pourSteps[i];
-            const pourMatch = step.innerHTML.match(/ataque\s+<strong>(\d+)ml<\/strong>/i);
+            const pourMatch = step.innerHTML.match(/despeje\s+<strong>(\d+)ml<\/strong>/i);
             
             if (pourMatch && pourMatch[1]) {
                 const pourAmount = parseInt(pourMatch[1]);
@@ -844,7 +841,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 timerState.recipeSteps.push({ 
                     time: times[i], 
-                    text: `Ataque ${pourAmount}ml de água (Total: ${totalWater}ml)` 
+                    text: `Despeje ${pourAmount}ml de água (Total: ${totalWater}ml)` 
                 });
             }
         }
@@ -984,7 +981,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Primeiro passo do timer (primeiro ataque em 00:00)
             for (let i = 0; i < stepElements.length; i++) {
                 if (stepElements[i].innerHTML.includes('Em <strong>00:00</strong>') || 
-                    (stepElements[i].textContent.includes('Em 00:00') && stepElements[i].textContent.includes('ataque'))) {
+                    (stepElements[i].textContent.includes('Em 00:00') && stepElements[i].textContent.includes('despeje'))) {
                     targetStepIndex = i;
                     break;
                 }
@@ -995,7 +992,7 @@ document.addEventListener('DOMContentLoaded', function() {
             targetStepIndex = stepElements.length - 1;
         } 
         else {
-            // Passos intermediários (ataques)
+            // Passos intermediários (despejos)
             const timeStrings = ["00:00", "00:45", "01:30", "02:15", "03:00", "03:45"];
             // Usar diretamente o índice atual para buscar o tempo correspondente
             const timeToFind = timeStrings[currentStepIndex] || "00:00";
@@ -1011,9 +1008,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Se ainda não encontrou, tente uma busca mais ampla
         if (targetStepIndex === -1 && currentStepIndex > 0) {
-            // Procurar por qualquer passo que inclua "ataque"
+            // Procurar por qualquer passo que inclua "despeje"
             for (let i = 0; i < stepElements.length; i++) {
-                if (stepElements[i].textContent.includes('ataque')) {
+                if (stepElements[i].textContent.includes('despeje')) {
                     // Pegar o último encontrado para índices maiores
                     targetStepIndex = i;
                     // Para índices intermediários, não quebrar o loop para encontrar o último
