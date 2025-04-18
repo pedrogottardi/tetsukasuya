@@ -5,25 +5,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1e1e1e">
     <title>Método 4:6 - Tetsu Kasuya</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <!-- Preconnect para Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Pré-carregar fonte crítica para o título -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"></noscript>
+
+    <!-- CSS crítico inline para o título -->
+    <style>
+      /* Garantir que o conteúdo crítico seja exibido imediatamente */
+      header {
+        display: block !important;
+        visibility: visible !important;
+      }
+      :root {
+        --text-color: #333333;
+        --dark-text-color: #e0e0e0;
+      }
+      h1 {
+        color: var(--text-color);
+        margin-bottom: 6px;
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        font-family: 'Poppins', sans-serif;
+        contain: layout;
+        content-visibility: auto;
+        contain-intrinsic-size: 1.8rem;
+      }
+
+      /* Otimização para o título principal */
+      #main-title {
+        display: block;
+        text-rendering: optimizeSpeed;
+        paint-order: stroke fill;
+      }
+      body.dark-mode h1 {
+        color: var(--dark-text-color);
+      }
+      .divider {
+        width: 50px;
+        height: 3px;
+        background-color: #0066ff;
+        margin: 0 auto;
+      }
+      body.dark-mode .divider {
+        background-color: #ff7b00;
+      }
+    </style>
+
+    <link rel="stylesheet" href="styles.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
     <meta name="description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
     <meta property="og:title" content="Método 4:6 - Tetsu Kasuya">
     <meta property="og:description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
     <meta property="og:type" content="website">
+
+    <!-- Google tag (gtag.js) - Carregado de forma otimizada -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XWTPV5WDK6"></script>
     <script>
-        // Aplicar tema escuro imediatamente para evitar flash
-        document.documentElement.classList.add('dark-theme');
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('darkMode', 'true');
-        });
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XWTPV5WDK6');
+    </script>
+
+    <!-- JavaScript crítico inline para melhorar o First Paint -->
+    <script>
+// JavaScript crítico para o First Paint
+(function() {
+  // Priorizar a renderização do título principal
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => {
+      const titleEl = document.getElementById('main-title');
+      if (titleEl) {
+        titleEl.style.visibility = 'visible';
+        titleEl.style.opacity = '1';
+      }
+    });
+  }
+
+  // Aplicar tema escuro imediatamente para evitar flash
+  const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedDarkMode = localStorage.getItem('darkMode');
+
+  if (storedDarkMode === 'true' || (storedDarkMode === null && prefersDarkMode)) {
+    document.documentElement.classList.add('dark-theme');
+    // Check if body exists before adding class
+    if (document.body) {
+      document.body.classList.add('dark-mode');
+    } else {
+      // If body doesn't exist yet, wait for it to be available
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('dark-mode');
+      });
+    }
+  }
+
+  // Função para carregar CSS de forma assíncrona
+  function loadCSS(href) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.media = 'print';
+    document.head.appendChild(link);
+
+    // Mudar para 'all' quando o CSS estiver carregado
+    link.onload = function() {
+      this.media = 'all';
+    };
+  }
+
+  // Função para carregar JavaScript de forma assíncrona
+  function loadScript(src, defer = true, async = false) {
+    const script = document.createElement('script');
+    script.src = src;
+    if (defer) script.defer = true;
+    if (async) script.async = true;
+    document.body.appendChild(script);
+    return script;
+  }
+
+  // Função para carregar fontes de forma otimizada
+  function loadFont(fontFamily, weights, display = 'swap') {
+    const fontLink = document.createElement('link');
+    fontLink.rel = 'stylesheet';
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${fontFamily}:wght@${weights.join(';')}&display=${display}`;
+    document.head.appendChild(fontLink);
+  }
+
+  // Função para carregar recursos
+  function loadResources() {
+    // Carregar CSS principal de forma assíncrona
+    loadCSS('styles.min.css');
+
+    // Carregar JavaScript principal de forma adiada
+    loadScript('script.min.js');
+
+    // Carregar fontes adicionais de forma otimizada (exceto a fonte do título que já foi pré-carregada)
+    loadFont('Poppins', [300, 400, 500, 600]);
+    loadFont('Roboto+Mono', [400, 700]);
+
+    // Precarregar imagens críticas
+    const criticalImages = [
+      'images/webp/balance.webp',
+      'images/webp/lemon.webp',
+      'images/webp/honey.webp',
+      'images/webp/muscle.webp',
+      'images/webp/bone.webp',
+      'images/webp/arrows.webp'
+    ];
+
+    criticalImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }
+
+  // Verificar se o documento já está carregado
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    // Se o documento já estiver carregado, executar imediatamente
+    loadResources();
+  } else {
+    // Caso contrário, aguardar o carregamento
+    window.addEventListener('load', loadResources);
+  }
+})();
     </script>
 </head>
 <body class="dark-mode">
     <div class="container">
         <header>
-            <h1>Método Tetsu Kasuya (4:6)</h1>
+            <h1 id="main-title">Método Tetsu Kasuya (4:6)</h1>
             <div class="divider"></div>
             <button class="method-explanation-btn"><em>Entenda o método</em></button>
         </header>
@@ -58,7 +215,10 @@
                         <div class="preference-cards">
                             <div class="preference-card" data-flavor="acidic">
                                 <div class="icon">
-                                    <img src="images/lemon.png" alt="Limão" />
+                                    <picture>
+                                        <source srcset="images/webp/lemon.webp" type="image/webp">
+                                        <img src="images/lemon.png" alt="Limão" />
+                                    </picture>
                                 </div>
                                 <h3>Mais Acidez</h3>
                                 <p>Primeiro ataque com mais água</p>
@@ -66,7 +226,10 @@
 
                             <div class="preference-card" data-flavor="sweet">
                                 <div class="icon">
-                                    <img src="images/honey.png" alt="Mel" />
+                                    <picture>
+                                        <source srcset="images/webp/honey.webp" type="image/webp">
+                                        <img src="images/honey.png" alt="Mel" />
+                                    </picture>
                                 </div>
                                 <h3>Mais Doçura</h3>
                                 <p>Primeiro ataque com menos água</p>
@@ -74,7 +237,10 @@
 
                             <div class="preference-card" data-flavor="standard">
                                 <div class="icon">
-                                    <img src="images/balance.png" alt="Equilíbrio" />
+                                    <picture>
+                                        <source srcset="images/webp/balance.webp" type="image/webp">
+                                        <img src="images/balance.png" alt="Equilíbrio" />
+                                    </picture>
                                 </div>
                                 <h3>Equilibrado</h3>
                                 <p>Ataques iguais para equilíbrio</p>
@@ -87,7 +253,10 @@
                         <div class="preference-cards">
                             <div class="preference-card" data-body="full">
                                 <div class="icon">
-                                    <img src="images/muscle.png" alt="Força" />
+                                    <picture>
+                                        <source srcset="images/webp/muscle.webp" type="image/webp">
+                                        <img src="images/muscle.png" alt="Força" />
+                                    </picture>
                                 </div>
                                 <h3>Mais Corpo</h3>
                                 <p>4 ataques finais</p>
@@ -95,7 +264,10 @@
 
                             <div class="preference-card" data-body="light">
                                 <div class="icon">
-                                    <img src="images/bone.png" alt="Osso" />
+                                    <picture>
+                                        <source srcset="images/webp/bone.webp" type="image/webp">
+                                        <img src="images/bone.png" alt="Osso" />
+                                    </picture>
                                 </div>
                                 <h3>Menos Corpo</h3>
                                 <p>2 ataques finais</p>
@@ -103,7 +275,10 @@
 
                             <div class="preference-card" data-body="standard">
                                 <div class="icon">
-                                    <img src="images/arrows.png" alt="Setas" />
+                                    <picture>
+                                        <source srcset="images/webp/arrows.webp" type="image/webp">
+                                        <img src="images/arrows.png" alt="Setas" />
+                                    </picture>
                                 </div>
                                 <h3>Padrão</h3>
                                 <p>3 ataques finais</p>
@@ -135,7 +310,7 @@
                         </div>
                     </div>
                 </div>
-            
+
                 <div class="recipe-container" id="recipe-container">
                     <h3>Passo a passo:</h3>
                     <div class="recipe-details">
@@ -144,44 +319,44 @@
                             <p><strong>Água:</strong> <span id="recipe-water">225ml</span></p>
                             <p><strong>Proporção:</strong> <span id="recipe-ratio">1:15</span></p>
                         </div>
-                        
+
                         <div class="recipe-steps" id="recipe-steps">
                             <!-- Os passos da receita serão inseridos aqui via JavaScript -->
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Botão Ko-fi -->
                 <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" class="kofi-button">Compre-me um café ☕</a>
             </div>
         </div>
     </div>
-        
+
     <footer>
         <div class="footer-content">
             <p>&copy; 2025 CoffeeGen. Todos os direitos reservados.</p>
             <p>Desenvolvido por Pedro Gottardi</p>
         </div>
     </footer>
-    
-    <script src="script.js"></script>
+
+    <script src="script.min.js"></script>
     <script>
       // Adicionar script para ajustar a visualização em dispositivos móveis
       document.addEventListener('DOMContentLoaded', function() {
         // Verificar se é um dispositivo móvel
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        
+
         if (isMobile) {
           // Ajustar os cartões de preferência para dispositivos móveis
           const preferenceCards = document.querySelectorAll('.preference-card');
-          
+
           preferenceCards.forEach(card => {
             // Armazenar o texto original como atributo de dados
             const descText = card.querySelector('p').textContent;
             card.setAttribute('data-description', descText);
           });
         }
-        
+
         // Verificar preferência de modo escuro do sistema
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
           // O usuário prefere o modo escuro no sistema e ainda não definiu uma preferência
@@ -192,4 +367,4 @@
       });
     </script>
 </body>
-</html> 
+</html>

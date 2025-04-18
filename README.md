@@ -1,7 +1,7 @@
 # ☕ CoffeeGen
 
 <div align="center">
-  
+
 ![GitHub language count](https://img.shields.io/github/languages/count/pedrogottardi/tetsukasuya)
 ![GitHub top language](https://img.shields.io/github/languages/top/pedrogottardi/tetsukasuya)
 ![GitHub last commit](https://img.shields.io/github/last-commit/pedrogottardi/tetsukasuya)
@@ -39,7 +39,7 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 ## 🛠️ Tecnologias Utilizadas
 
 <div align="center">
-  
+
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
@@ -80,7 +80,7 @@ Este projeto está sob a licença MIT. Veja o arquivo <a href="LICENSE" target="
 ---
 
 <div align="center">
-  
+
 <a href="https://github.com/pedrogottardi/tetsukasuya" target="_blank"><img src="https://img.shields.io/badge/⭐️_Dê_uma_estrela-FFD700?style=for-the-badge" alt="Dê uma estrela se este projeto te ajudou!"/></a>
 
 <a href="https://ko-fi.com/pedrogott" target="_blank"><img src="https://img.shields.io/badge/Me%20compre%20um%20café-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white" alt="Me compre um café" /></a>
