@@ -8,7 +8,7 @@
 ![Bitbucket open issues](https://img.shields.io/github/issues/pedrogottardi/tetsukasuya)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fcoffeegen.vercel.app)
 
-<img src="images/balance.png" alt="CoffeeGen Logo" width="120"/>
+<img src="assets/images/balance.png" alt="CoffeeGen Logo" width="120"/>
 
 **Uma aplicação web para calcular as proporções e tempos para o método de preparo de café 4:6 desenvolvido por Tetsu Kasuya.**
 
