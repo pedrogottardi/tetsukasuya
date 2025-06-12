@@ -10,6 +10,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Google AdSense -->
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559"
+     crossorigin="anonymous"></script>
+
     <!-- Preload recursos críticos -->
     <link rel="preload" href="src/css/styles.min.css" as="style">
     <link rel="preload" href="src/js/script.min.js" as="script">
@@ -505,7 +509,6 @@
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="dns-prefetch" href="//www.googletagmanager.com">
-    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
 
     <!-- Prefetch para recursos que podem ser necessários -->
     <link rel="prefetch" href="assets/images/webp/tetsu-kasuya.webp">
@@ -596,41 +599,6 @@
           });
         };
       }, { once: true });
-    </script>
-
-    <!-- Google AdSense - Carregado de forma otimizada -->
-    <script>
-      // Carregar AdSense de forma otimizada após interação do usuário
-      let adsenseLoaded = false;
-
-      function loadAdSense() {
-        if (adsenseLoaded) return;
-        adsenseLoaded = true;
-
-        const script = document.createElement('script');
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559';
-        script.async = true;
-        script.crossOrigin = 'anonymous';
-        document.head.appendChild(script);
-
-        script.onload = function() {
-          // Inicializar anúncios após carregamento
-          const ads = document.querySelectorAll('.adsbygoogle');
-          ads.forEach(ad => {
-            if (ad.getAttribute('data-ad-status') !== 'filled') {
-              (adsbygoogle = window.adsbygoogle || []).push({});
-            }
-          });
-        };
-      }
-
-      // Carregar AdSense após interação do usuário ou timeout
-      ['mousedown', 'touchstart', 'keydown', 'scroll'].forEach(event => {
-        window.addEventListener(event, loadAdSense, { once: true, passive: true });
-      });
-
-      // Fallback: carregar após 3 segundos se não houver interação
-      setTimeout(loadAdSense, 3000);
     </script>
 
     <!-- JavaScript crítico inline para melhorar o First Paint -->
@@ -910,18 +878,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Banner AdSense para Desktop -->
-                    <div class="ad-container ad-container-desktop">
-                        <!-- coffeegen -->
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-2733184476160559"
-                             data-ad-slot="9316490926"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"
-                             data-ad-status="unfilled"></ins>
-                    </div>
                 </div>
             </div>
 
@@ -967,18 +923,6 @@
                 <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" class="kofi-button"
                    aria-label="Apoie o desenvolvedor comprando um café no Ko-fi - abre em nova aba">Compre-me um café ☕</a>
             </div>
-        </div>
-
-        <!-- Banner AdSense para Mobile -->
-        <div class="ad-container ad-container-mobile">
-            <!-- coffeegen -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-2733184476160559"
-                 data-ad-slot="9316490926"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"
-                 data-ad-status="unfilled"></ins>
         </div>
     </div>
 
