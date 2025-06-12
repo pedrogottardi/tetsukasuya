@@ -35,6 +35,9 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 | 💪 **Personalização de corpo** | Ajuste para mais corpo, menos corpo ou padrão |
 | ⏱️ **Cronômetro interativo** | Passos guiados para o preparo perfeito |
 | 📱 **Design responsivo** | Funciona perfeitamente em desktop e dispositivos móveis |
+| ⚡ **Performance otimizada** | Core Web Vitals otimizados para Google PageSpeed Insights |
+| 🔄 **PWA (Progressive Web App)** | Instalável e funciona offline |
+| ♿ **Acessibilidade completa** | ARIA labels e navegação por teclado |
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -43,6 +46,8 @@ Esta aplicação facilita o cálculo das proporções e tempos, guiando o usuár
 [![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/pt-BR/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
+[![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
+[![WebP](https://img.shields.io/badge/WebP-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://developers.google.com/speed/webp)
 
 </div>
 

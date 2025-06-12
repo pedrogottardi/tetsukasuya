@@ -4,27 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1e1e1e">
-    <title>Método 4:6 - Tetsu Kasuya</title>
+    <title>CoffeeGen - Tetsu Kasuya (4:6)</title>
 
     <!-- Preconnect para Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Preload recursos críticos -->
+    <link rel="preload" href="src/css/styles.min.css" as="style">
+    <link rel="preload" href="src/js/script.min.js" as="script">
+    <link rel="preload" href="assets/icons/favicon.ico" as="image">
+
     <!-- Pré-carregar fonte crítica para o título -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap"></noscript>
 
-    <!-- CSS crítico inline para o título -->
+    <!-- Preload imagens críticas -->
+    <link rel="preload" href="assets/images/webp/balance.webp" as="image">
+    <link rel="preload" href="assets/images/webp/lemon.webp" as="image">
+    <link rel="preload" href="assets/images/webp/honey.webp" as="image">
+
+    <!-- CSS crítico inline para melhor LCP -->
     <style>
-      /* Garantir que o conteúdo crítico seja exibido imediatamente */
+      /* Reset básico e variáveis críticas */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #0066ff;
+        --text-color: #333333;
+        --dark-text-color: #e0e0e0;
+        --background: #f5f5f5;
+        --dark-background: #121212;
+        --card-bg: #ffffff;
+        --dark-card-bg: #1e1e1e;
+        --mode-transition: background-color 0.5s ease, color 0.5s ease;
+      }
+
+      /* Garantir renderização imediata do conteúdo crítico */
+      body {
+        font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: var(--background);
+        color: var(--text-color);
+        line-height: 1.5;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        transition: var(--mode-transition);
+        font-display: swap;
+      }
+
+      body.dark-mode {
+        background-color: var(--dark-background);
+        color: var(--dark-text-color);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 12px;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 80px;
+      }
+
       header {
+        text-align: center;
+        margin-bottom: 12px;
         display: block !important;
         visibility: visible !important;
       }
-      :root {
-        --text-color: #333333;
-        --dark-text-color: #e0e0e0;
-      }
+
       h1 {
         color: var(--text-color);
         margin-bottom: 6px;
@@ -32,78 +87,592 @@
         font-weight: 700;
         letter-spacing: -0.5px;
         font-family: 'Poppins', sans-serif;
-        contain: layout;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-rendering: optimizeSpeed;
+        contain: layout style;
         content-visibility: auto;
-        contain-intrinsic-size: 1.8rem;
       }
 
-      /* Otimização para o título principal */
-      #main-title {
-        display: block;
-        text-rendering: optimizeSpeed;
-        paint-order: stroke fill;
-      }
       body.dark-mode h1 {
         color: var(--dark-text-color);
       }
+
+      /* Ícone do título com dimensões explícitas para evitar CLS */
+      .title-icon {
+        height: 1.2em;
+        width: 1.2em;
+        flex-shrink: 0;
+        object-fit: contain;
+        transition: var(--mode-transition);
+      }
+
       .divider {
         width: 50px;
         height: 3px;
-        background-color: #0066ff;
+        background-color: var(--primary-color);
         margin: 0 auto;
       }
+
       body.dark-mode .divider {
         background-color: #ff7b00;
       }
+
+      /* Layout principal crítico */
+      .main-content {
+        display: flex;
+        flex: 1;
+        gap: 12px;
+      }
+
+      .left-column, .right-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Acessibilidade */
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      /* Remover outline padrão do navegador */
+      *:focus {
+        outline: none;
+      }
+
+      /* Focus indicators personalizados para acessibilidade */
+      button:focus-visible,
+      input:focus-visible,
+      .preference-card:focus-visible,
+      a:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.4);
+        border-radius: 4px;
+      }
+
+      /* Focus para botões específicos */
+      .timer-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.5);
+        transform: translateY(-1px);
+      }
+
+      .method-explanation-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.6);
+        transform: scale(1.05);
+      }
+
+      .lock-button:focus-visible {
+        box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.5);
+        border-radius: 4px;
+      }
+
+      .kofi-button:focus-visible {
+        box-shadow: 0 0 0 3px rgba(255, 94, 91, 0.4);
+        transform: translateY(-2px);
+      }
+
+      /* Focus para cartões de preferência */
+      .preference-card:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.4), 0 8px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+        border-color: var(--primary-color);
+      }
+
+      /* Focus para inputs */
+      input:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.3);
+        border-color: var(--primary-color);
+      }
+
+      /* Modo escuro - ajustar cores do focus */
+      body.dark-mode button:focus-visible,
+      body.dark-mode .preference-card:focus-visible,
+      body.dark-mode input:focus-visible,
+      body.dark-mode a:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--dark-primary-rgb), 0.4);
+      }
+
+      body.dark-mode .method-explanation-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--dark-primary-rgb), 0.6);
+      }
+
+      body.dark-mode .timer-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--dark-primary-rgb), 0.5);
+      }
+
+      /* Focus para botão de modo escuro/claro */
+      .dark-mode-toggle:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.5);
+        transform: scale(1.1);
+      }
+
+      body.dark-mode .dark-mode-toggle:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--dark-primary-rgb), 0.5);
+      }
+
+      /* Garantir que elementos interativos tenham cursor pointer */
+      button,
+      .preference-card,
+      .lock-button,
+      .dark-mode-toggle,
+      .method-explanation-btn,
+      .kofi-button {
+        cursor: pointer;
+      }
+
+      /* Remover outline em todos os estados para elementos específicos */
+      .timer-btn,
+      .preference-card,
+      .method-explanation-btn,
+      .lock-button,
+      .dark-mode-toggle,
+      .kofi-button {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      /* Melhorar feedback visual no hover para compensar a remoção do outline */
+      .timer-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .preference-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .method-explanation-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+      }
+
+      body.dark-mode .method-explanation-btn:hover {
+        box-shadow: 0 4px 12px rgba(var(--dark-primary-rgb), 0.3);
+      }
+
+      /* Garantir que não há outline em nenhum elemento interativo */
+      button,
+      input,
+      select,
+      textarea,
+      a,
+      [tabindex],
+      .preference-card,
+      .timer-btn,
+      .method-explanation-btn,
+      .lock-button,
+      .dark-mode-toggle,
+      .kofi-button {
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      /* Permitir seleção de texto em inputs */
+      input,
+      textarea {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+      }
+
+      /* Transições suaves para todos os elementos interativos */
+      button,
+      .preference-card,
+      .method-explanation-btn,
+      .lock-button,
+      .dark-mode-toggle,
+      .kofi-button {
+        transition: all 0.2s ease;
+      }
+
+      /* Estados ativos (quando clicado) */
+      .timer-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .preference-card:active {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .method-explanation-btn:active {
+        transform: scale(0.98);
+      }
+
+      .lock-button:active {
+        transform: scale(0.95);
+      }
+
+      /* Melhorar navegação por teclado */
+      [tabindex="0"]:focus-visible,
+      [role="radio"]:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.5);
+        border-radius: 8px;
+      }
+
+      /* Indicador especial para elementos selecionados com foco */
+      .preference-card.selected:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+      }
+
+      body.dark-mode .preference-card.selected:focus-visible {
+        box-shadow: 0 0 0 3px rgba(var(--dark-primary-rgb), 0.6), 0 8px 20px rgba(0, 0, 0, 0.15);
+        border-color: var(--dark-primary-color);
+      }
+
+      /* Garantir que elementos com role tenham comportamento correto */
+      [role="button"],
+      [role="radio"] {
+        outline: none !important;
+        cursor: pointer;
+      }
+
+      /* Feedback visual para elementos desabilitados */
+      button:disabled,
+      input:disabled,
+      .preference-card.disabled {
+        outline: none !important;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      /* Remover qualquer outline residual do navegador */
+      *::-moz-focus-inner {
+        border: 0;
+        outline: none;
+      }
+
+      /* Webkit específico */
+      input[type="button"]:focus,
+      input[type="submit"]:focus,
+      input[type="reset"]:focus,
+      button:focus {
+        outline: none !important;
+        -webkit-appearance: none;
+      }
+
+      /* Estilos para links do footer - com especificidade alta */
+      footer a,
+      footer .footer-content a,
+      .footer-content p a {
+        color: var(--primary-color) !important;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border-radius: 3px;
+        padding: 2px 4px;
+        margin: -2px -4px;
+        display: inline-block;
+      }
+
+      footer a:hover,
+      footer .footer-content a:hover,
+      .footer-content p a:hover {
+        color: var(--primary-color) !important;
+        background-color: rgba(var(--primary-rgb), 0.1);
+        text-decoration: underline;
+        transform: translateY(-1px);
+      }
+
+      footer a:focus-visible,
+      footer .footer-content a:focus-visible,
+      .footer-content p a:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.5);
+        background-color: rgba(var(--primary-rgb), 0.1);
+      }
+
+      footer a:active,
+      footer .footer-content a:active,
+      .footer-content p a:active {
+        transform: translateY(0);
+        background-color: rgba(var(--primary-rgb), 0.15);
+      }
+
+      /* Modo escuro - cores do footer */
+      body.dark-mode footer a,
+      body.dark-mode footer .footer-content a,
+      body.dark-mode .footer-content p a {
+        color: var(--dark-primary-color) !important;
+      }
+
+      body.dark-mode footer a:hover,
+      body.dark-mode footer .footer-content a:hover,
+      body.dark-mode .footer-content p a:hover {
+        color: var(--dark-primary-color) !important;
+        background-color: rgba(var(--dark-primary-rgb), 0.15);
+      }
+
+      body.dark-mode footer a:focus-visible,
+      body.dark-mode footer .footer-content a:focus-visible,
+      body.dark-mode .footer-content p a:focus-visible {
+        box-shadow: 0 0 0 2px rgba(var(--dark-primary-rgb), 0.5);
+        background-color: rgba(var(--dark-primary-rgb), 0.15);
+      }
+
+      body.dark-mode footer a:active,
+      body.dark-mode footer .footer-content a:active,
+      body.dark-mode .footer-content p a:active {
+        background-color: rgba(var(--dark-primary-rgb), 0.2);
+      }
+
+      /* Garantir que o footer tenha contraste adequado */
+      footer {
+        background-color: var(--background);
+        color: var(--text-color);
+        transition: var(--mode-transition);
+      }
+
+      body.dark-mode footer {
+        background-color: var(--dark-background);
+        color: var(--dark-text-color);
+      }
+
+      /* Responsivo crítico */
+      @media (max-width: 768px) {
+        .main-content {
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: clamp(1.2rem, 5vw, 1.6rem);
+          flex-wrap: wrap;
+        }
+      }
+
+      /* Reduzir movimento para usuários sensíveis */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
     </style>
 
-    <link rel="stylesheet" href="styles.min.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>☕</text></svg>">
-    <meta name="description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
-    <meta property="og:title" content="Método 4:6 - Tetsu Kasuya">
-    <meta property="og:description" content="Calculadora para o método 4:6 de Tetsu Kasuya para café filtrado">
+    <link rel="stylesheet" href="src/css/styles.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/icons/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/icons/favicon.ico">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="config/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="CoffeeGen">
+    <meta name="msapplication-TileColor" content="#0066ff">
+    <meta name="msapplication-config" content="config/browserconfig.xml">
+
+    <!-- Meta Tags SEO -->
+    <meta name="description" content="Calculadora gratuita para o método 4:6 de Tetsu Kasuya. Crie receitas personalizadas de café filtrado com cronômetro integrado. Controle acidez, doçura e corpo do seu café.">
+    <meta name="keywords" content="método 4:6, Tetsu Kasuya, café filtrado, V60, receita café, calculadora café, brew ratio, coffee brewing, barista, café especial">
+    <meta name="author" content="Pedro Gottardi">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="pt-BR">
+    <meta name="revisit-after" content="7 days">
+    <meta name="rating" content="general">
+
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+    <meta http-equiv="Expires" content="Thu, 31 Dec 2025 23:59:59 GMT">
+
+    <!-- DNS Prefetch e Resource Hints -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+
+    <!-- Prefetch para recursos que podem ser necessários -->
+    <link rel="prefetch" href="assets/images/webp/tetsu-kasuya.webp">
+    <link rel="prefetch" href="assets/audio/beep.mp3">
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://coffeegen.vercel.app/">
+    <meta property="og:title" content="CoffeeGen - Método 4:6 Tetsu Kasuya | Calculadora de Café">
+    <meta property="og:description" content="Calculadora gratuita para o método 4:6 de Tetsu Kasuya. Crie receitas personalizadas de café filtrado com cronômetro integrado. Controle acidez, doçura e corpo do seu café.">
+    <meta property="og:image" content="https://coffeegen.vercel.app/assets/images/tetsu-kasuya.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Tetsu Kasuya - Criador do Método 4:6 para café filtrado">
+    <meta property="og:site_name" content="CoffeeGen">
+    <meta property="og:locale" content="pt_BR">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://coffeegen.vercel.app/">
+    <meta property="twitter:title" content="CoffeeGen - Método 4:6 Tetsu Kasuya | Calculadora de Café">
+    <meta property="twitter:description" content="Calculadora gratuita para o método 4:6 de Tetsu Kasuya. Crie receitas personalizadas de café filtrado com cronômetro integrado.">
+    <meta property="twitter:image" content="https://coffeegen.vercel.app/assets/images/tetsu-kasuya.jpg">
+    <meta property="twitter:image:alt" content="Tetsu Kasuya - Criador do Método 4:6 para café filtrado">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://coffeegen.vercel.app/">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "CoffeeGen - Método 4:6 Tetsu Kasuya",
+      "description": "Calculadora gratuita para o método 4:6 de Tetsu Kasuya. Crie receitas personalizadas de café filtrado com cronômetro integrado.",
+      "url": "https://coffeegen.vercel.app/",
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "creator": {
+        "@type": "Person",
+        "name": "Pedro Gottardi"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "Método 4:6",
+        "description": "Técnica de preparo de café criada por Tetsu Kasuya, campeão mundial de Brewers Cup 2016"
+      },
+      "keywords": "método 4:6, Tetsu Kasuya, café filtrado, V60, receita café, calculadora café",
+      "inLanguage": "pt-BR",
+      "isAccessibleForFree": true,
+      "browserRequirements": "Requires JavaScript. Requires HTML5.",
+      "softwareVersion": "1.0",
+      "datePublished": "2025-01-01",
+      "dateModified": "2025-01-15"
+    }
+    </script>
 
     <!-- Google tag (gtag.js) - Carregado de forma otimizada -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XWTPV5WDK6"></script>
     <script>
+      // Carregar Google Analytics de forma otimizada
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+      gtag('config', 'G-XWTPV5WDK6', {
+        // Otimizações de performance
+        send_page_view: false,
+        transport_type: 'beacon',
+        custom_map: {'custom_parameter': 'value'}
+      });
 
-      gtag('config', 'G-XWTPV5WDK6');
+      // Carregar script do GA de forma assíncrona após o load
+      window.addEventListener('load', function() {
+        const script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-XWTPV5WDK6';
+        script.async = true;
+        document.head.appendChild(script);
+
+        // Enviar page view após carregamento
+        script.onload = function() {
+          gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href
+          });
+        };
+      }, { once: true });
+    </script>
+
+    <!-- Google AdSense - Carregado de forma otimizada -->
+    <script>
+      // Carregar AdSense de forma otimizada após interação do usuário
+      let adsenseLoaded = false;
+
+      function loadAdSense() {
+        if (adsenseLoaded) return;
+        adsenseLoaded = true;
+
+        const script = document.createElement('script');
+        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        document.head.appendChild(script);
+
+        script.onload = function() {
+          // Inicializar anúncios após carregamento
+          const ads = document.querySelectorAll('.adsbygoogle');
+          ads.forEach(ad => {
+            if (ad.getAttribute('data-ad-status') !== 'filled') {
+              (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+          });
+        };
+      }
+
+      // Carregar AdSense após interação do usuário ou timeout
+      ['mousedown', 'touchstart', 'keydown', 'scroll'].forEach(event => {
+        window.addEventListener(event, loadAdSense, { once: true, passive: true });
+      });
+
+      // Fallback: carregar após 3 segundos se não houver interação
+      setTimeout(loadAdSense, 3000);
     </script>
 
     <!-- JavaScript crítico inline para melhorar o First Paint -->
     <script>
-// JavaScript crítico para o First Paint
+// JavaScript crítico otimizado para Core Web Vitals
 (function() {
-  // Priorizar a renderização do título principal
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(() => {
-      const titleEl = document.getElementById('main-title');
-      if (titleEl) {
-        titleEl.style.visibility = 'visible';
-        titleEl.style.opacity = '1';
-      }
-    });
-  }
+  'use strict';
 
-  // Aplicar tema escuro imediatamente para evitar flash
+  // Performance mark para medição
+  performance.mark('critical-js-start');
+
+  // Aplicar tema escuro imediatamente para evitar FOUC (Flash of Unstyled Content)
   const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   const storedDarkMode = localStorage.getItem('darkMode');
 
   if (storedDarkMode === 'true' || (storedDarkMode === null && prefersDarkMode)) {
     document.documentElement.classList.add('dark-theme');
-    // Check if body exists before adding class
+    // Aplicar classe dark-mode no body se já existir
     if (document.body) {
       document.body.classList.add('dark-mode');
     } else {
-      // If body doesn't exist yet, wait for it to be available
+      // Aguardar body estar disponível
       document.addEventListener('DOMContentLoaded', function() {
         document.body.classList.add('dark-mode');
-      });
+      }, { once: true });
     }
+  }
+
+  // Otimizar renderização do título principal
+  function optimizeTitle() {
+    const titleEl = document.getElementById('main-title');
+    if (titleEl) {
+      titleEl.style.visibility = 'visible';
+      titleEl.style.opacity = '1';
+      titleEl.style.transform = 'translateZ(0)'; // Força aceleração de hardware
+    }
+  }
+
+  // Usar requestIdleCallback se disponível, senão setTimeout
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(optimizeTitle, { timeout: 100 });
+  } else {
+    setTimeout(optimizeTitle, 0);
   }
 
   // Função para carregar CSS de forma assíncrona
@@ -138,32 +707,63 @@
     document.head.appendChild(fontLink);
   }
 
-  // Função para carregar recursos
+  // Função otimizada para carregar recursos
   function loadResources() {
-    // Carregar CSS principal de forma assíncrona
-    loadCSS('styles.min.css');
+    // Performance mark
+    performance.mark('resource-loading-start');
 
-    // Carregar JavaScript principal de forma adiada
-    loadScript('script.min.js');
+    // Carregar CSS principal de forma assíncrona apenas se não foi pré-carregado
+    if (!document.querySelector('link[href="src/css/styles.min.css"]')) {
+      loadCSS('src/css/styles.min.css');
+    }
 
-    // Carregar fontes adicionais de forma otimizada (exceto a fonte do título que já foi pré-carregada)
-    loadFont('Poppins', [300, 400, 500, 600]);
-    loadFont('Roboto+Mono', [400, 700]);
+    // Carregar JavaScript principal de forma adiada apenas se não foi pré-carregado
+    if (!document.querySelector('script[src="src/js/script.min.js"]')) {
+      loadScript('src/js/script.min.js', true, false);
+    }
 
-    // Precarregar imagens críticas
+    // Carregar fontes adicionais de forma otimizada com requestIdleCallback
+    function loadFonts() {
+      loadFont('Poppins', [300, 400, 500, 600], 'swap');
+      loadFont('Roboto+Mono', [400, 700], 'swap');
+    }
+
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(loadFonts, { timeout: 2000 });
+    } else {
+      setTimeout(loadFonts, 1000);
+    }
+
+    // Precarregar imagens críticas com Intersection Observer se disponível
     const criticalImages = [
-      'images/webp/balance.webp',
-      'images/webp/lemon.webp',
-      'images/webp/honey.webp',
-      'images/webp/muscle.webp',
-      'images/webp/bone.webp',
-      'images/webp/arrows.webp'
+      'assets/images/webp/balance.webp',
+      'assets/images/webp/lemon.webp',
+      'assets/images/webp/honey.webp'
     ];
 
+    // Precarregar imagens não-críticas com delay
+    const nonCriticalImages = [
+      'assets/images/webp/muscle.webp',
+      'assets/images/webp/bone.webp',
+      'assets/images/webp/arrows.webp'
+    ];
+
+    // Carregar imagens críticas imediatamente
     criticalImages.forEach(src => {
       const img = new Image();
       img.src = src;
     });
+
+    // Carregar imagens não-críticas com delay
+    setTimeout(() => {
+      nonCriticalImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+      });
+    }, 1000);
+
+    performance.mark('resource-loading-end');
+    performance.measure('resource-loading', 'resource-loading-start', 'resource-loading-end');
   }
 
   // Verificar se o documento já está carregado
@@ -172,17 +772,24 @@
     loadResources();
   } else {
     // Caso contrário, aguardar o carregamento
-    window.addEventListener('load', loadResources);
+    window.addEventListener('load', loadResources, { once: true });
   }
+
+  // Performance mark final
+  performance.mark('critical-js-end');
+  performance.measure('critical-js-execution', 'critical-js-start', 'critical-js-end');
 })();
     </script>
 </head>
 <body class="dark-mode">
     <div class="container">
         <header>
-            <h1 id="main-title">Método Tetsu Kasuya (4:6)</h1>
+            <h1 id="main-title">
+                <img src="assets/icons/favicon.ico" alt="Ícone do CoffeeGen - Calculadora do Método 4:6 de Tetsu Kasuya" class="title-icon" width="32" height="32" loading="eager">
+                CoffeeGen - Tetsu Kasuya (4:6)
+                <button class="method-explanation-btn" aria-label="Entenda o método 4:6 de Tetsu Kasuya - Abre explicação detalhada">?</button>
+            </h1>
             <div class="divider"></div>
-            <button class="method-explanation-btn"><em>Entenda o método</em></button>
         </header>
         <div class="main-content">
             <div class="left-column">
@@ -191,55 +798,69 @@
                         <div class="input-row">
                             <div class="input-group">
                                 <label for="coffee-amount">Café (g):</label>
-                                <input type="number" id="coffee-amount" value="15" min="10" max="50">
+                                <input type="number" id="coffee-amount" value="15" min="10" max="50"
+                                       aria-label="Quantidade de café em gramas"
+                                       aria-describedby="coffee-help">
+                                <div id="coffee-help" class="sr-only">Digite a quantidade de café entre 10 e 50 gramas</div>
                             </div>
                             <div class="input-group disabled">
                                 <label for="water-amount">Água (ml):</label>
                                 <div class="input-with-lock">
-                                    <input type="number" id="water-amount" value="225" min="150" max="750" disabled>
-                                    <button class="lock-button" id="water-lock" title="Desbloquear campo">🔒</button>
+                                    <input type="number" id="water-amount" value="225" min="150" max="750" disabled
+                                           aria-label="Quantidade de água em mililitros"
+                                           aria-describedby="water-help">
+                                    <button class="lock-button" id="water-lock" title="Desbloquear campo de água"
+                                            aria-label="Desbloquear campo de quantidade de água">🔒</button>
                                 </div>
+                                <div id="water-help" class="sr-only">Campo calculado automaticamente baseado no café e proporção</div>
                             </div>
                             <div class="input-group disabled">
                                 <label for="ratio">Proporção:</label>
                                 <div class="input-with-lock">
-                                    <input type="number" id="ratio" value="15" min="10" max="20" step="1" disabled>
-                                    <button class="lock-button" id="ratio-lock" title="Desbloquear campo">🔒</button>
+                                    <input type="number" id="ratio" value="15" min="10" max="20" step="1" disabled
+                                           aria-label="Proporção café para água"
+                                           aria-describedby="ratio-help">
+                                    <button class="lock-button" id="ratio-lock" title="Desbloquear campo de proporção"
+                                            aria-label="Desbloquear campo de proporção café-água">🔒</button>
                                 </div>
+                                <div id="ratio-help" class="sr-only">Proporção de 1 grama de café para X gramas de água</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="preference-section">
-                        <h2>Preferência de sabor:</h2>
-                        <div class="preference-cards">
-                            <div class="preference-card" data-flavor="acidic">
+                    <div class="preference-section" role="group" aria-labelledby="flavor-heading">
+                        <h2 id="flavor-heading">Preferência de sabor:</h2>
+                        <div class="preference-cards" role="radiogroup" aria-labelledby="flavor-heading">
+                            <div class="preference-card" data-flavor="acidic" role="radio" aria-checked="false" tabindex="0"
+                                 aria-label="Selecionar preferência por mais acidez no café">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/lemon.webp" type="image/webp">
-                                        <img src="images/lemon.png" alt="Limão" />
+                                        <source srcset="assets/images/webp/lemon.webp" type="image/webp">
+                                        <img src="assets/images/lemon.png" alt="Ícone de limão representando acidez no café - Método 4:6" width="48" height="48" loading="eager" />
                                     </picture>
                                 </div>
                                 <h3>Mais Acidez</h3>
                                 <p>Primeiro ataque com mais água</p>
                             </div>
 
-                            <div class="preference-card" data-flavor="sweet">
+                            <div class="preference-card" data-flavor="sweet" role="radio" aria-checked="false" tabindex="0"
+                                 aria-label="Selecionar preferência por mais doçura no café">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/honey.webp" type="image/webp">
-                                        <img src="images/honey.png" alt="Mel" />
+                                        <source srcset="assets/images/webp/honey.webp" type="image/webp">
+                                        <img src="assets/images/honey.png" alt="Ícone de mel representando doçura no café - Método 4:6" width="48" height="48" loading="eager" />
                                     </picture>
                                 </div>
                                 <h3>Mais Doçura</h3>
                                 <p>Primeiro ataque com menos água</p>
                             </div>
 
-                            <div class="preference-card" data-flavor="standard">
+                            <div class="preference-card" data-flavor="standard" role="radio" aria-checked="true" tabindex="0"
+                                 aria-label="Selecionar preferência por sabor equilibrado no café" class="selected">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/balance.webp" type="image/webp">
-                                        <img src="images/balance.png" alt="Equilíbrio" />
+                                        <source srcset="assets/images/webp/balance.webp" type="image/webp">
+                                        <img src="assets/images/balance.png" alt="Ícone de balança representando equilíbrio no café - Método 4:6" width="48" height="48" loading="eager" />
                                     </picture>
                                 </div>
                                 <h3>Equilibrado</h3>
@@ -248,36 +869,39 @@
                         </div>
                     </div>
 
-                    <div class="preference-section">
-                        <h2>Preferência de corpo:</h2>
-                        <div class="preference-cards">
-                            <div class="preference-card" data-body="full">
+                    <div class="preference-section" role="group" aria-labelledby="body-heading">
+                        <h2 id="body-heading">Preferência de corpo:</h2>
+                        <div class="preference-cards" role="radiogroup" aria-labelledby="body-heading">
+                            <div class="preference-card" data-body="full" role="radio" aria-checked="false" tabindex="0"
+                                 aria-label="Selecionar preferência por mais corpo no café">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/muscle.webp" type="image/webp">
-                                        <img src="images/muscle.png" alt="Força" />
+                                        <source srcset="assets/images/webp/muscle.webp" type="image/webp">
+                                        <img src="assets/images/muscle.png" alt="Ícone de músculo representando mais corpo no café - Método 4:6" width="48" height="48" loading="lazy" />
                                     </picture>
                                 </div>
                                 <h3>Mais Corpo</h3>
                                 <p>4 ataques finais</p>
                             </div>
 
-                            <div class="preference-card" data-body="light">
+                            <div class="preference-card" data-body="light" role="radio" aria-checked="false" tabindex="0"
+                                 aria-label="Selecionar preferência por menos corpo no café">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/bone.webp" type="image/webp">
-                                        <img src="images/bone.png" alt="Osso" />
+                                        <source srcset="assets/images/webp/bone.webp" type="image/webp">
+                                        <img src="assets/images/bone.png" alt="Ícone de osso representando menos corpo no café - Método 4:6" width="48" height="48" loading="lazy" />
                                     </picture>
                                 </div>
                                 <h3>Menos Corpo</h3>
                                 <p>2 ataques finais</p>
                             </div>
 
-                            <div class="preference-card" data-body="standard">
+                            <div class="preference-card" data-body="standard" role="radio" aria-checked="true" tabindex="0"
+                                 aria-label="Selecionar preferência por corpo padrão no café" class="selected">
                                 <div class="icon">
                                     <picture>
-                                        <source srcset="images/webp/arrows.webp" type="image/webp">
-                                        <img src="images/arrows.png" alt="Setas" />
+                                        <source srcset="assets/images/webp/arrows.webp" type="image/webp">
+                                        <img src="assets/images/arrows.png" alt="Ícone de setas representando corpo padrão no café - Método 4:6" width="48" height="48" loading="lazy" />
                                     </picture>
                                 </div>
                                 <h3>Padrão</h3>
@@ -285,18 +909,30 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Banner AdSense para Desktop -->
+                    <div class="ad-container ad-container-desktop">
+                        <!-- coffeegen -->
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-2733184476160559"
+                             data-ad-slot="9316490926"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"
+                             data-ad-status="unfilled"></ins>
+                    </div>
                 </div>
             </div>
 
             <div class="right-column">
                 <!-- Cronômetro movido para a coluna direita -->
-                <div class="timer-section">
-                    <h2>Cronômetro</h2>
+                <div class="timer-section" role="region" aria-labelledby="timer-heading">
+                    <h2 id="timer-heading">Cronômetro</h2>
                     <div class="timer-container">
-                        <div class="timer-display">00:00</div>
+                        <div class="timer-display" aria-live="polite" aria-label="Tempo decorrido">00:00</div>
                         <div class="timer-controls">
-                            <button id="timer-start" class="timer-btn">Iniciar</button>
-                            <button id="timer-reset" class="timer-btn">Reiniciar</button>
+                            <button id="timer-start" class="timer-btn" aria-label="Iniciar cronômetro do método 4:6">Iniciar</button>
+                            <button id="timer-reset" class="timer-btn" aria-label="Reiniciar cronômetro e receita">Reiniciar</button>
                         </div>
                         <div class="timer-progress">
                             <div class="timer-progress-bar"></div>
@@ -311,35 +947,48 @@
                     </div>
                 </div>
 
-                <div class="recipe-container" id="recipe-container">
-                    <h3>Passo a passo:</h3>
+                <div class="recipe-container" id="recipe-container" role="region" aria-labelledby="recipe-heading">
+                    <h3 id="recipe-heading">Passo a passo:</h3>
                     <div class="recipe-details">
-                        <div class="recipe-info">
-                            <p><strong>Café:</strong> <span id="recipe-coffee">15g</span></p>
-                            <p><strong>Água:</strong> <span id="recipe-water">225ml</span></p>
-                            <p><strong>Proporção:</strong> <span id="recipe-ratio">1:15</span></p>
+                        <div class="recipe-info" aria-label="Informações da receita">
+                            <p><strong>Café:</strong> <span id="recipe-coffee" aria-label="Quantidade de café">15g</span></p>
+                            <p><strong>Água:</strong> <span id="recipe-water" aria-label="Quantidade de água">225ml</span></p>
+                            <p><strong>Proporção:</strong> <span id="recipe-ratio" aria-label="Proporção café-água">1:15</span></p>
                         </div>
 
-                        <div class="recipe-steps" id="recipe-steps">
+                        <div class="recipe-steps" id="recipe-steps" role="list" aria-label="Passos da receita do método 4:6">
                             <!-- Os passos da receita serão inseridos aqui via JavaScript -->
                         </div>
                     </div>
                 </div>
 
                 <!-- Botão Ko-fi -->
-                <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" class="kofi-button">Compre-me um café ☕</a>
+                <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" class="kofi-button"
+                   aria-label="Apoie o desenvolvedor comprando um café no Ko-fi - abre em nova aba">Compre-me um café ☕</a>
             </div>
+        </div>
+
+        <!-- Banner AdSense para Mobile -->
+        <div class="ad-container ad-container-mobile">
+            <!-- coffeegen -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-2733184476160559"
+                 data-ad-slot="9316490926"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"
+                 data-ad-status="unfilled"></ins>
         </div>
     </div>
 
-    <footer>
+    <footer role="contentinfo" aria-label="Informações do site">
         <div class="footer-content">
             <p>&copy; 2025 CoffeeGen. Todos os direitos reservados.</p>
-            <p>Desenvolvido por Pedro Gottardi</p>
+            <p>Desenvolvido por <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" aria-label="Perfil do desenvolvedor Pedro Gottardi no Ko-fi">Pedro Gottardi</a></p>
         </div>
     </footer>
 
-    <script src="script.min.js"></script>
+    <script src="src/js/script.min.js" defer></script>
     <script>
       // Adicionar script para ajustar a visualização em dispositivos móveis
       document.addEventListener('DOMContentLoaded', function() {
@@ -363,6 +1012,57 @@
           if (localStorage.getItem('darkMode') === null) {
             localStorage.setItem('darkMode', 'true');
           }
+        }
+
+        // Registrar Service Worker para cache
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+              .then(registration => {})
+              .catch(error => {});
+          });
+        }
+
+        // Otimização de imagens com Intersection Observer
+        if ('IntersectionObserver' in window) {
+          const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const img = entry.target;
+                if (img.dataset.src) {
+                  img.src = img.dataset.src;
+                  img.removeAttribute('data-src');
+                  observer.unobserve(img);
+                }
+              }
+            });
+          }, {
+            rootMargin: '50px 0px',
+            threshold: 0.01
+          });
+
+          // Observar imagens com lazy loading
+          document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+            imageObserver.observe(img);
+          });
+        }
+
+        // Otimização de performance com requestIdleCallback
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            // Precarregar recursos não críticos
+            const nonCriticalResources = [
+              'assets/images/webp/tetsu-kasuya.webp',
+              'assets/audio/beep.mp3'
+            ];
+
+            nonCriticalResources.forEach(src => {
+              const link = document.createElement('link');
+              link.rel = 'prefetch';
+              link.href = src;
+              document.head.appendChild(link);
+            });
+          }, { timeout: 5000 });
         }
       });
     </script>
