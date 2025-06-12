@@ -11,8 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
    <!-- AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559"
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559"
      crossorigin="anonymous"></script>
+
     <!-- Preload recursos críticos -->
     <link rel="preload" href="src/css/styles.min.css" as="style">
     <link rel="preload" href="src/js/script.min.js" as="script">
@@ -491,12 +492,13 @@
     <meta name="msapplication-config" content="config/browserconfig.xml">
 
     <!-- Meta Tags SEO -->
-    <meta name="description" content="Calculadora gratuita para o método 4:6 de Tetsu Kasuya. Crie receitas personalizadas de café filtrado com cronômetro integrado. Controle acidez, doçura e corpo do seu café.">
-    <meta name="keywords" content="método 4:6, Tetsu Kasuya, café filtrado, V60, receita café, calculadora café, brew ratio, coffee brewing, barista, café especial">
-    <meta name="author" content="Pedro Gottardi">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="pt-BR">
-    <meta name="revisit-after" content="7 days">
+    <meta name="title" content="CoffeeGen - Gerador de Receitas para o método de Tetsu Kasuya" />
+    <meta name="description" content="Calculadora para o método 4:6 de Tetsu Kasuya" />
+    <meta name="keywords" content="método 4:6, Tetsu Kasuya, café filtrado, V60, receita café, calculadora café, brew ratio, coffee brewing, barista, café especial" />
+    <meta name="author" content="Pedro Gottardi" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="pt-BR" />
+    <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general">
 
     <!-- Cache Control -->
@@ -518,10 +520,10 @@
     <meta property="og:url" content="https://coffeegen.vercel.app/">
     <meta property="og:title" content="CoffeeGen - Método 4:6 Tetsu Kasuya | Calculadora de Café">
     <meta property="og:description" content="Calculadora para o método 4:6 de Tetsu Kasuya.">
-    <meta property="og:image" content="https://coffeegen.vercel.app/assets/images/lemon.png">
+    <meta property="og:image" content="https://coffeegen.vercel.app/assets/icons/favicon.ico">
     <meta property="og:image:width" content="512">
     <meta property="og:image:height" content="512">
-    <meta property="og:image:alt" content="Website Logo - Calculadora para o método 4:6 de Tetsu Kasuya">
+    <meta property="og:image:alt" content="CoffeeGen - Calculadora para o método 4:6 de Tetsu Kasuya">
     <meta property="og:site_name" content="CoffeeGen">
     <meta property="og:locale" content="pt_BR">
 
@@ -530,7 +532,7 @@
     <meta property="twitter:url" content="https://coffeegen.vercel.app/">
     <meta property="twitter:title" content="CoffeeGen - Método 4:6 Tetsu Kasuya | Calculadora de Café">
     <meta property="twitter:description" content="Calculadora para o método 4:6 de Tetsu Kasuya.">
-    <meta property="twitter:image" content="https://coffeegen.vercel.app/assets/images/lemon.png">
+    <meta property="twitter:image" content="https://coffeegen.vercel.app/assets/icons/favicon.ico">
     <meta property="twitter:image:alt" content="Website Logo - Calculadora para o método 4:6 de Tetsu Kasuya">
 
     <!-- Canonical URL -->
@@ -570,35 +572,16 @@
     }
     </script>
 
-    <!-- Google tag (gtag.js) - Carregado de forma otimizada -->
-    <script>
-      // Carregar Google Analytics de forma otimizada
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-257EXVP1PE', {
-        // Otimizações de performance
-        send_page_view: false,
-        transport_type: 'beacon',
-        custom_map: {'custom_parameter': 'value'}
-      });
+   <!-- Google tag (gtag.js) ANALYTICS -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-257EXVP1PE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-      // Carregar script do GA de forma assíncrona após o load
-      window.addEventListener('load', function() {
-        const script = document.createElement('script');
-        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-257EXVP1PE';
-        script.async = true;
-        document.head.appendChild(script);
+  gtag('config', 'G-257EXVP1PE');
+</script>
 
-        // Enviar page view após carregamento
-        script.onload = function() {
-          gtag('event', 'page_view', {
-            page_title: document.title,
-            page_location: window.location.href
-          });
-        };
-      }, { once: true });
-    </script>
 
     <!-- JavaScript crítico inline para melhorar o First Paint -->
     <script>
@@ -930,6 +913,20 @@
 
     <footer role="contentinfo" aria-label="Informações do site">
         <div class="footer-content">
+          <!-- ADSENSE FOOTER -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2733184476160559"
+     crossorigin="anonymous"></script>
+<!-- coffeegen -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-2733184476160559"
+     data-ad-slot="9316490926"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
             <p>&copy; 2025 CoffeeGen. Todos os direitos reservados.</p>
             <p>Desenvolvido por <a href="https://ko-fi.com/pedrogott" target="_blank" rel="noopener" aria-label="Perfil do desenvolvedor Pedro Gottardi no Ko-fi">Pedro Gottardi</a></p>
         </div>

@@ -51,10 +51,8 @@ self.addEventListener('activate', event => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          // Remove caches antigos
-          if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
+          // Remove todos os caches antigos
+          return caches.delete(cacheName);
         })
       );
     }).then(() => {
@@ -145,3 +143,4 @@ self.addEventListener('message', event => {
     );
   }
 });
+
